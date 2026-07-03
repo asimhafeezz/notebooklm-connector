@@ -1,7 +1,7 @@
 [project]
 name = "notebooklm-connector"
 version = "0.2.0"
-description = "Lean MCP server connecting Google NotebookLM to Claude — grounded Q&A, sources, and Studio generation"
+description = "MCP server bringing Google NotebookLM into any MCP client (Claude, Cursor, Codex, Windsurf…) — grounded Q&A with citations, sources, and Studio generation"
 readme = "README.md"
 # Pinned to 3.12: rookiepy ships prebuilt wheels only up to cp312 — on 3.13+
 # uv falls back to a Rust source build that is slow and often fails.
