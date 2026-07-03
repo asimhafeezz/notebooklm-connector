@@ -108,6 +108,30 @@ Your AI assistant ──MCP──► notebooklm-connector ──► notebooklm-p
 
 Auth is your browser’s existing Google session, read locally on your machine. Nothing is sent anywhere except to NotebookLM itself. It runs entirely on your computer.
 
+## Security & privacy
+
+This connector logs in by reading your browser’s existing Google session cookies — the same way you’re already signed in. Here’s exactly what that means, in plain terms.
+
+**What it accesses**
+- Your browser’s cookie-encryption key from the macOS **Keychain** (you approve this with a one-time system prompt), used only to decrypt cookies.
+- Your browser’s **cookie database**, filtered to **Google/NotebookLM domains only** — not your other sites.
+- It writes your session to `~/.notebooklm/` (owner-only, `chmod 600`) so it doesn’t have to re-read the browser every time.
+
+**What it does _not_ do**
+- ❌ It never sends your cookies or data anywhere except **NotebookLM’s own servers** (`notebooklm.google.com`) — the same place your browser already sends them.
+- ❌ No telemetry, no analytics, no third-party servers. It runs entirely on your machine.
+- ❌ It does not touch non-Google cookies, passwords, or other Keychain items.
+
+**Is this the technique malware uses?** Reading browser cookies is, mechanically, what infostealer malware does too — so it’s fair to ask. The difference is everything *around* it: this runs **locally, with your explicit consent**, is **open source** (read the code), **exfiltrates nothing**, and is **scoped to Google domains**. Malware’s defining trait — shipping your cookies to an attacker — is exactly what this never does.
+
+**Staying safe**
+- **Only install official builds** — from this repo’s [releases](https://github.com/asimhafeezz/notebooklm-connector/releases) or [PyPI](https://pypi.org/project/notebooklm-connector/). Because any cookie-reading tool *could* be modified to misbehave, don’t run unofficial copies.
+- **Your session lives in `~/.notebooklm/`** as live Google auth — treat that folder as sensitive (it’s already locked to your user account).
+- **Grant Safari “Full Disk Access” only if you need Safari** — the other browsers don’t require it.
+
+**Revoke anytime**
+- Delete `~/.notebooklm/` to remove the stored session, and/or sign out of Google (which invalidates the cookies everywhere).
+
 ## For developers
 
 ```bash
