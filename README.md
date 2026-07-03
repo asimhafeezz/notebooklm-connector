@@ -1,5 +1,7 @@
 # NotebookLM Connector
 
+![NotebookLM Connector — download, connect, and ask your Google NotebookLM notebooks from inside Claude](assets/hero.png)
+
 Talk to your **Google NotebookLM** notebooks from inside **Claude**. Ask questions answered only from your own sources (with citations), add sources, and generate Audio Overviews, reports, quizzes, and more — all from a normal chat.
 
 ## ⬇️ Install (Claude Desktop)
