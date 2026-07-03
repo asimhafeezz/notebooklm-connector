@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NotebookLM Connector — Google NotebookLM inside any AI assistant</title>
+<meta name="description" content="Bring your Google NotebookLM notebooks into Claude, Cursor, Codex and any MCP client. Grounded answers with citations, source management, and Studio generation — running locally on your machine.">
+<meta property="og:title" content="NotebookLM Connector">
+<meta property="og:description" content="Google NotebookLM inside any AI assistant — grounded answers with citations, no password, runs locally.">
+<meta property="og:image" content="/hero.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234F46E5'/><path d='M30 32h40v8H30zM30 48h40v8H30zM30 64h24v8H30z' fill='white'/></svg>">
+<style>
+  :root{
+    --bg:#0A0E17; --bg2:#0F1424; --card:#0B1324; --card2:#141B33;
+    --border:#1E293B; --border2:#334155;
+    --text:#F8FAFC; --muted:#94A3B8; --dim:#64748B;
+    --indigo:#4F46E5; --indigo2:#818CF8; --blue:#3B82F6; --green:#10B981; --amber:#F59E0B;
+    --radius:14px; --maxw:1080px;
+    --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  .grad-bg{position:fixed;inset:0;z-index:-1;background:
+    radial-gradient(600px circle at 15% 5%, rgba(79,70,229,.18), transparent 45%),
+    radial-gradient(600px circle at 85% 8%, rgba(16,185,129,.12), transparent 45%),
+    linear-gradient(180deg,#0A0E17,#0F1424 60%,#070A0F)}
+
+  /* nav */
+  nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);background:rgba(10,14,23,.72);border-bottom:1px solid var(--border)}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:16px}
+  .brand .logo{width:30px;height:30px;border-radius:8px;background:var(--indigo);display:grid;place-items:center}
+  .brand .logo svg{width:18px;height:18px}
+  .nav-links{display:flex;align-items:center;gap:26px;font-size:14px;color:var(--muted)}
+  .nav-links a:hover{color:var(--text)}
+  .nav-cta{padding:8px 16px;border:1px solid var(--border2);border-radius:10px;color:var(--text)!important}
+  .nav-cta:hover{background:var(--card2)}
+  @media(max-width:720px){.nav-links a:not(.nav-cta){display:none}}
+
+  /* hero */
+  header{padding:80px 0 40px;text-align:center}
+  .badge{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border:1px solid var(--border2);border-radius:20px;font-size:13px;color:var(--indigo2);background:var(--card);margin-bottom:26px}
+  .badge .dot{width:7px;height:7px;border-radius:50%;background:var(--green)}
+  h1{font-size:clamp(34px,6vw,58px);line-height:1.08;font-weight:800;letter-spacing:-.02em;max-width:16ch;margin:0 auto}
+  h1 .accent{background:linear-gradient(120deg,#818CF8,#34D399);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lede{margin:22px auto 0;max-width:60ch;font-size:clamp(16px,2.2vw,20px);color:var(--muted)}
+  .cta-row{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:34px}
+  .btn{display:inline-flex;align-items:center;gap:9px;padding:13px 22px;border-radius:12px;font-size:15px;font-weight:600;border:1px solid transparent;transition:transform .12s,background .12s}
+  .btn:hover{transform:translateY(-1px)}
+  .btn-primary{background:var(--indigo);color:#fff}
+  .btn-primary:hover{background:#4338CA}
+  .btn-ghost{background:var(--card);border-color:var(--border2);color:var(--text)}
+  .btn-ghost:hover{background:var(--card2)}
+  .hero-shot{margin:56px auto 0;max-width:1000px;border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.5)}
+
+  /* client strip */
+  .clients{margin-top:56px;text-align:center;color:var(--dim);font-size:14px}
+  .clients .row{display:flex;flex-wrap:wrap;gap:10px 22px;justify-content:center;margin-top:16px;font-size:15px;font-weight:500;color:var(--muted)}
+
+  /* sections */
+  section{padding:72px 0}
+  .eyebrow{color:var(--indigo2);font-weight:600;font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+  h2{font-size:clamp(26px,4vw,38px);font-weight:800;letter-spacing:-.02em;margin:10px 0 0}
+  .section-lede{color:var(--muted);max-width:60ch;margin-top:14px;font-size:17px}
+  .center{text-align:center}
+  .center .section-lede{margin-left:auto;margin-right:auto}
+
+  /* features */
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:44px}
+  @media(max-width:860px){.grid{grid-template-columns:1fr}}
+  .feat{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px}
+  .feat .ic{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;margin-bottom:14px;font-size:20px}
+  .feat h3{font-size:17px;font-weight:600;margin-bottom:6px}
+  .feat p{color:var(--muted);font-size:14.5px}
+
+  /* how it works */
+  .diagram{margin-top:40px;border:1px solid var(--border);border-radius:18px;overflow:hidden}
+
+  /* install */
+  .install-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:44px}
+  @media(max-width:760px){.install-grid{grid-template-columns:1fr}}
+  .icard{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:22px}
+  .icard h3{font-size:16px;font-weight:600;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+  .icard .sub{color:var(--dim);font-size:13px;margin-bottom:14px}
+  .code{position:relative;background:#060912;border:1px solid var(--border);border-radius:10px;padding:12px 44px 12px 14px;font-family:var(--mono);font-size:12.5px;color:#E2E8F0;overflow-x:auto;white-space:pre}
+  .copy{position:absolute;top:8px;right:8px;width:28px;height:28px;border:1px solid var(--border2);background:var(--card2);border-radius:7px;color:var(--muted);cursor:pointer;display:grid;place-items:center;font-size:13px}
+  .copy:hover{color:var(--text);background:#1e293b}
+  .tag{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:6px;background:rgba(79,70,229,.15);color:var(--indigo2)}
+
+  /* security */
+  .sec{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:32px;margin-top:40px;display:grid;grid-template-columns:1fr 1fr;gap:30px}
+  @media(max-width:760px){.sec{grid-template-columns:1fr}}
+  .sec ul{list-style:none;display:flex;flex-direction:column;gap:12px}
+  .sec li{display:flex;gap:11px;font-size:14.5px;color:var(--muted)}
+  .sec li b{color:var(--text);font-weight:600}
+  .sec .ok{color:var(--green)}.sec .no{color:#F43F5E}
+
+  /* footer */
+  footer{border-top:1px solid var(--border);padding:48px 0 60px;margin-top:40px;color:var(--dim);font-size:14px}
+  footer .wrap{display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between;align-items:center}
+  footer a{color:var(--muted)}footer a:hover{color:var(--text)}
+  .foot-links{display:flex;gap:22px}
+  .disclaimer{margin-top:22px;color:var(--dim);font-size:12.5px;max-width:70ch}
+</style>
+</head>
+<body>
+<div class="grad-bg"></div>
+
+<nav><div class="wrap">
+  <a class="brand" href="#top">
+    <span class="logo"><svg viewBox="0 0 24 24" fill="none"><path d="M6 6h12v2H6zM6 11h12v2H6zM6 16h7v2H6z" fill="#fff"/></svg></span>
+    NotebookLM Connector
+  </a>
+  <div class="nav-links">
+    <a href="#how">How it works</a>
+    <a href="#features">Features</a>
+    <a href="#install">Install</a>
+    <a href="#security">Security</a>
+    <a class="nav-cta" href="https://github.com/asimhafeezz/notebooklm-connector" target="_blank" rel="noopener">GitHub ↗</a>
+  </div>
+</div></nav>
+
+<header id="top"><div class="wrap">
+  <span class="badge"><span class="dot"></span>Works with any MCP client · macOS · Windows · Linux</span>
+  <h1>Your Google NotebookLM, inside <span class="accent">any AI assistant</span></h1>
+  <p class="lede">Ask questions answered only from your own sources — with citations. Add sources, generate Audio Overviews, reports and quizzes, all from a normal chat in Claude, Cursor, Codex, and more. No password. Runs entirely on your machine.</p>
+  <div class="cta-row">
+    <a class="btn btn-primary" href="#install">Get started</a>
+    <a class="btn btn-ghost" href="https://github.com/asimhafeezz/notebooklm-connector/releases/latest" target="_blank" rel="noopener">⬇ Download for Claude Desktop</a>
+    <a class="btn btn-ghost" href="https://github.com/asimhafeezz/notebooklm-connector" target="_blank" rel="noopener">★ Star on GitHub</a>
+  </div>
+  <div class="hero-shot"><img src="hero.png" alt="NotebookLM Connector — install, connect, ask" width="1280" height="680"></div>
+
+  <div class="clients">
+    Drop it into
+    <div class="row"><span>Claude Desktop</span><span>·</span><span>Cursor</span><span>·</span><span>Codex</span><span>·</span><span>Claude Code</span><span>·</span><span>Windsurf</span><span>·</span><span>Antigravity</span></div>
+  </div>
+</div></header>
+
+<section id="features"><div class="wrap center">
+  <span class="eyebrow">What it does</span>
+  <h2>Research over your own documents</h2>
+  <p class="section-lede">Thirteen tools that turn NotebookLM into something your AI assistant can drive directly.</p>
+  <div class="grid" style="text-align:left">
+    <div class="feat"><div class="ic" style="background:rgba(16,185,129,.15);color:#34D399">◆</div><h3>Grounded answers, cited</h3><p>Answers come only from your sources — never made up — and cite the exact passages.</p></div>
+    <div class="feat"><div class="ic" style="background:rgba(59,130,246,.15);color:#60A5FA">＋</div><h3>Manage sources</h3><p>Create notebooks and add URLs, YouTube videos, pasted text, or local files by asking.</p></div>
+    <div class="feat"><div class="ic" style="background:rgba(244,63,94,.15);color:#FB7185">♪</div><h3>Studio generation</h3><p>Audio Overviews, video, reports, quizzes, flashcards, mind maps, slide decks — then download.</p></div>
+    <div class="feat"><div class="ic" style="background:rgba(129,140,248,.15);color:#818CF8">⟳</div><h3>Thorough mode</h3><p>Auto-coverage: it finds gaps in an answer and asks the follow-ups for you, then merges them.</p></div>
+    <div class="feat"><div class="ic" style="background:rgba(245,158,11,.15);color:#FBBF24">⚿</div><h3>No password login</h3><p>Reuses the Google session already in your browser — Chrome, Brave, Firefox, Comet, and more.</p></div>
+    <div class="feat"><div class="ic" style="background:rgba(148,163,184,.15);color:#CBD5E1">🖥</div><h3>Runs locally</h3><p>Everything happens on your machine. Nothing is sent anywhere except to NotebookLM itself.</p></div>
+  </div>
+</div></section>
+
+<section id="how"><div class="wrap center">
+  <span class="eyebrow">How it works</span>
+  <h2>You built the car; we plug in the engine</h2>
+  <p class="section-lede"><code>notebooklm-connector</code> is the MCP server your assistant talks to. It uses the <code>notebooklm-py</code> library to reach Google NotebookLM, and reads your browser session locally to log in.</p>
+  <div class="diagram"><img src="architecture.png" alt="Architecture diagram: you → AI assistant → notebooklm-connector → notebooklm-py → Google NotebookLM, with a login side-channel" width="1280" height="660"></div>
+</div></section>
+
+<section id="install"><div class="wrap">
+  <div class="center"><span class="eyebrow">Install</span><h2>Pick your app</h2>
+  <p class="section-lede">Then say <b>"Connect my NotebookLM"</b> and choose your Google account. Needs Python 3.12 &amp; <a href="https://docs.astral.sh/uv/" target="_blank" rel="noopener" style="color:var(--indigo2)">uv</a> on the machine.</p></div>
+  <div class="install-grid">
+    <div class="icard">
+      <h3>Claude Desktop <span class="tag">one-click</span></h3>
+      <div class="sub">macOS &amp; Windows · double-click to install</div>
+      <a class="btn btn-primary" style="width:100%;justify-content:center" href="https://github.com/asimhafeezz/notebooklm-connector/releases/latest" target="_blank" rel="noopener">⬇ Download the .mcpb</a>
+    </div>
+    <div class="icard">
+      <h3>Cursor <span class="tag">one-click</span></h3>
+      <div class="sub">Adds the server with one click</div>
+      <a class="btn btn-ghost" style="width:100%;justify-content:center" href="https://cursor.com/install-mcp?name=notebooklm&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyItLXB5dGhvbiIsIjMuMTIiLCJub3RlYm9va2xtLWNvbm5lY3RvciJdfQ==" target="_blank" rel="noopener">＋ Add to Cursor</a>
+    </div>
+    <div class="icard">
+      <h3>Codex</h3><div class="sub">One line in your terminal</div>
+      <div class="code">codex mcp add notebooklm -- uvx --python 3.12 notebooklm-connector<button class="copy" aria-label="Copy">⧉</button></div>
+    </div>
+    <div class="icard">
+      <h3>Claude Code <span class="tag">Linux friendly</span></h3><div class="sub">CLI — works on macOS, Windows &amp; Linux</div>
+      <div class="code">claude mcp add notebooklm -- uvx --python 3.12 notebooklm-connector<button class="copy" aria-label="Copy">⧉</button></div>
+    </div>
+    <div class="icard" style="grid-column:1/-1">
+      <h3>Any other MCP client <span class="tag">Windsurf · Cline · Antigravity</span></h3><div class="sub">Add this to the client's MCP config</div>
+      <div class="code">{
+  "mcpServers": {
+    "notebooklm": { "command": "uvx", "args": ["--python", "3.12", "notebooklm-connector"] }
+  }
+}<button class="copy" aria-label="Copy">⧉</button></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="security"><div class="wrap">
+  <div class="center"><span class="eyebrow">Security &amp; privacy</span><h2>Local by design</h2>
+  <p class="section-lede">It logs in the same way you're already signed in — and nothing leaves your machine.</p></div>
+  <div class="sec">
+    <div>
+      <h3 style="margin-bottom:14px">What it does</h3>
+      <ul>
+        <li><span class="ok">✓</span><span>Reads <b>only Google/NotebookLM cookies</b> from your browser, to log in.</span></li>
+        <li><span class="ok">✓</span><span>Talks <b>only to NotebookLM's servers</b> — the same place your browser already does.</span></li>
+        <li><span class="ok">✓</span><span><b>Open source.</b> Read exactly what it accesses, line by line.</span></li>
+        <li><span class="ok">✓</span><span>Session stored locally, owner-only. Delete <code>~/.notebooklm</code> to revoke.</span></li>
+      </ul>
+    </div>
+    <div>
+      <h3 style="margin-bottom:14px">What it never does</h3>
+      <ul>
+        <li><span class="no">✕</span><span>No telemetry, no analytics, <b>no third-party servers.</b></span></li>
+        <li><span class="no">✕</span><span>Never sends your cookies or data <b>anywhere else.</b></span></li>
+        <li><span class="no">✕</span><span>Doesn't touch non-Google cookies, passwords, or other secrets.</span></li>
+        <li><span class="no">✕</span><span>No account required from us — it's <b>your</b> Google account.</span></li>
+      </ul>
+    </div>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <div class="brand"><span class="logo"><svg viewBox="0 0 24 24"><path d="M6 6h12v2H6zM6 11h12v2H6zM6 16h7v2H6z" fill="#fff"/></svg></span>NotebookLM Connector</div>
+  <div class="foot-links">
+    <a href="https://github.com/asimhafeezz/notebooklm-connector" target="_blank" rel="noopener">GitHub</a>
+    <a href="https://pypi.org/project/notebooklm-connector/" target="_blank" rel="noopener">PyPI</a>
+    <a href="https://github.com/asimhafeezz/notebooklm-connector/releases/latest" target="_blank" rel="noopener">Releases</a>
+    <a href="https://github.com/asimhafeezz/notebooklm-connector#readme" target="_blank" rel="noopener">Docs</a>
+  </div>
+</div>
+<div class="wrap"><p class="disclaimer">MIT licensed · Uses NotebookLM's internal API via the notebooklm-py library. Not affiliated with or endorsed by Google. It automates your own NotebookLM account — use it as you normally would.</p></div>
+</footer>
+
+<script>
+document.querySelectorAll('.copy').forEach(function(b){
+  b.addEventListener('click',function(){
+    var t=b.parentNode.cloneNode(true);t.querySelector('.copy').remove();
+    navigator.clipboard.writeText(t.textContent.trim()).then(function(){
+      var o=b.textContent;b.textContent='✓';setTimeout(function(){b.textContent=o},1200);
+    });
+  });
+});
+</script>
+</body>
+</html>
