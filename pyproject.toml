@@ -13,7 +13,7 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/asimhafeezz/notebooklm-connector"
+Homepage = "https://notebooklm-connector-three.vercel.app"
 Repository = "https://github.com/asimhafeezz/notebooklm-connector"
 Issues = "https://github.com/asimhafeezz/notebooklm-connector/issues"
 
