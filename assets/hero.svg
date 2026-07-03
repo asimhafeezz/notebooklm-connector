@@ -1,92 +1,260 @@
-<svg width="1280" height="680" viewBox="0 0 1280 680" fill="none" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+<svg width="1280" height="680" viewBox="0 0 1280 680" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1280" y2="680" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#f7f8ff"/>
-      <stop offset="1" stop-color="#eaeefb"/>
+    <!-- Background Gradient -->
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0A0E17"/>
+      <stop offset="50%" stop-color="#0F1424"/>
+      <stop offset="100%" stop-color="#070A0F"/>
     </linearGradient>
-    <filter id="shadow" x="-20%" y="-20%" width="140%" height="160%">
-      <feDropShadow dx="0" dy="6" stdDeviation="12" flood-color="#3b3f66" flood-opacity="0.10"/>
+
+    <!-- Card Glowing Borders -->
+    <linearGradient id="card-border" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4F46E5" stop-opacity="0.4"/>
+      <stop offset="50%" stop-color="#3B82F6" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#10B981" stop-opacity="0.4"/>
+    </linearGradient>
+
+    <!-- Glowing Line Gradient -->
+    <linearGradient id="glow-line" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#3B82F6" stop-opacity="0.8"/>
+      <stop offset="50%" stop-color="#10B981" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#3B82F6" stop-opacity="0.8"/>
+    </linearGradient>
+
+    <!-- Text Title Gradient -->
+    <linearGradient id="title-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#CBD5E1"/>
+    </linearGradient>
+
+    <!-- Glassmorphic Drop Shadow -->
+    <filter id="card-shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="16" flood-color="#000000" flood-opacity="0.5"/>
     </filter>
+
+    <!-- Glow Effect Filter -->
+    <filter id="neon-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Grid Pattern -->
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#ffffff" stroke-width="1" stroke-opacity="0.03"/>
+    </pattern>
   </defs>
 
-  <rect width="1280" height="680" fill="url(#bg)"/>
+  <style>
+    .font-sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    .title { font-weight: 800; font-size: 40px; fill: url(#title-grad); }
+    .subtitle { font-weight: 400; font-size: 18px; fill: #94A3B8; }
+    .panel-title { font-weight: 700; font-size: 20px; fill: #F8FAFC; }
+    .badge-text { font-weight: 600; font-size: 14px; fill: #10B981; }
+    .code-text { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 13px; fill: #E2E8F0; }
+    .bubble-user { font-weight: 500; font-size: 15px; fill: #F1F5F9; }
+    .bubble-ai { font-size: 14px; fill: #E2E8F0; }
+    .citation { font-weight: 700; font-size: 13px; fill: #34D399; }
+  </style>
 
-  <!-- Header (left edge x=64, aligned) -->
-  <text x="64" y="84" font-size="46" font-weight="700" fill="#1a1c2e">NotebookLM Connector</text>
-  <text x="64" y="124" font-size="22" font-weight="400" fill="#5b6079">Your Google NotebookLM notebooks — inside any AI assistant.</text>
+  <!-- Background -->
+  <rect width="1280" height="680" fill="url(#bg-grad)"/>
+  <rect width="1280" height="680" fill="url(#grid)"/>
 
-  <!-- badge (right edge x=1216, aligned with cards) -->
-  <rect x="948" y="52" width="268" height="42" rx="21" fill="#eef0fe" stroke="#d9ddfa"/>
-  <circle cx="975" cy="73" r="5" fill="#16a34a"/>
-  <text x="991" y="79" font-size="16" font-weight="600" fill="#4f46e5">Works with any MCP client</text>
+  <!-- Top Decorative Glows -->
+  <circle cx="200" cy="100" r="250" fill="#4F46E5" opacity="0.15" filter="blur(80px)"/>
+  <circle cx="1080" cy="100" r="250" fill="#10B981" opacity="0.1" filter="blur(80px)"/>
+  <circle cx="640" cy="340" r="200" fill="#3B82F6" opacity="0.08" filter="blur(80px)"/>
 
-  <!-- ============ STEP CARDS: x=64/464/864, w=352, y=168 h=182 ============ -->
-  <!-- badge cy and icon cy both = 210; title y=292; body y=324/348; text left x=cardX+32 -->
-
-  <!-- CARD 1 -->
-  <g filter="url(#shadow)"><rect x="64" y="168" width="352" height="182" rx="20" fill="#ffffff" stroke="#e7e9f3"/></g>
-  <circle cx="116" cy="210" r="20" fill="#4f46e5"/>
-  <text x="116" y="217" font-size="20" font-weight="700" fill="#ffffff" text-anchor="middle">1</text>
-  <g stroke="#4f46e5" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" fill="none">
-    <rect x="344" y="190" width="40" height="40" rx="10"/>
-    <path d="M364 201 v18 M355 210 h18"/>
-  </g>
-  <text x="96" y="292" font-size="25" font-weight="700" fill="#1a1c2e">Install</text>
-  <text x="96" y="324" font-size="18" fill="#6b7089">Add it to your app — a file,</text>
-  <text x="96" y="348" font-size="18" fill="#6b7089">a button, or one command.</text>
-
-  <!-- CARD 2 -->
-  <g filter="url(#shadow)"><rect x="464" y="168" width="352" height="182" rx="20" fill="#ffffff" stroke="#e7e9f3"/></g>
-  <circle cx="516" cy="210" r="20" fill="#4f46e5"/>
-  <text x="516" y="217" font-size="20" font-weight="700" fill="#ffffff" text-anchor="middle">2</text>
-  <g fill="none">
-    <circle cx="764" cy="210" r="16" stroke="#4f46e5" stroke-width="3.2"/>
-    <circle cx="764" cy="205" r="5.5" fill="#4f46e5"/>
-    <path d="M753 222 a11 8 0 0 1 22 0" stroke="#4f46e5" stroke-width="3.2" stroke-linecap="round"/>
-    <circle cx="781" cy="223" r="8.5" fill="#16a34a"/>
-    <path d="M776.5 223 l3 3 5.5 -6.5" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-  </g>
-  <text x="496" y="292" font-size="25" font-weight="700" fill="#1a1c2e">Connect</text>
-  <text x="496" y="324" font-size="18" fill="#6b7089">Say “Connect my</text>
-  <text x="496" y="348" font-size="18" fill="#6b7089">NotebookLM,” pick account.</text>
-
-  <!-- CARD 3 -->
-  <g filter="url(#shadow)"><rect x="864" y="168" width="352" height="182" rx="20" fill="#ffffff" stroke="#e7e9f3"/></g>
-  <circle cx="916" cy="210" r="20" fill="#d97757"/>
-  <text x="916" y="217" font-size="20" font-weight="700" fill="#ffffff" text-anchor="middle">3</text>
-  <g fill="none" stroke="#d97757" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round">
-    <path d="M1146 192 h28 a10 10 0 0 1 10 10 v16 a10 10 0 0 1 -10 10 h-18 l-13 11 v-11 a10 10 0 0 1 -7 -10 v-16 a10 10 0 0 1 10 -10 z"/>
-    <path d="M1152 206 h22 M1152 214 h14" stroke-width="2.6"/>
-  </g>
-  <text x="896" y="292" font-size="25" font-weight="700" fill="#1a1c2e">Ask</text>
-  <text x="896" y="324" font-size="18" fill="#6b7089">Chat with your notebooks —</text>
-  <text x="896" y="348" font-size="18" fill="#6b7089">answers cite your sources.</text>
-
-  <!-- arrows centered in the gaps (gap centers 440 / 840), aligned to card mid-height y=259 -->
-  <g stroke="#b9bede" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" fill="none">
-    <path d="M428 259 h22"/><path d="M448 251 l9 8 -9 8"/>
-    <path d="M828 259 h22"/><path d="M848 251 l9 8 -9 8"/>
+  <!-- ================= HEADER SECTION ================= -->
+  <!-- Logo/Brand Icon -->
+  <g transform="translate(64, 48)">
+    <rect width="48" height="48" rx="12" fill="#4F46E5" />
+    <path d="M16 16H32V20H16V16ZM16 24H32V28H16V24ZM16 32H26V36H16V32Z" fill="#FFFFFF"/>
+    <circle cx="34" cy="34" r="8" fill="#10B981" stroke="#0A0E17" stroke-width="2"/>
+    <path d="M32 34h4m-2-2v4" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round"/>
   </g>
 
-  <!-- ============ COMPATIBILITY BAR (x=64..1216) ============ -->
-  <rect x="64" y="384" width="1152" height="50" rx="25" fill="#eef0fe" stroke="#d9ddfa"/>
-  <text x="640" y="415" font-size="17" font-weight="600" fill="#4f46e5" text-anchor="middle">Claude Desktop  ·  Cursor  ·  Codex  ·  Claude Code  ·  Windsurf  ·  Cline  ·  any MCP client</text>
+  <!-- Title & Subtitle -->
+  <text x="128" y="78" class="font-sans title">NotebookLM Connector</text>
+  <text x="128" y="106" class="font-sans subtitle">Bring Google NotebookLM sources, citations, and Studio generations directly into your local AI assistants</text>
 
-  <!-- ============ MINI CHAT DEMO (x=64..1216, y=460 h=184) ============ -->
-  <g filter="url(#shadow)"><rect x="64" y="460" width="1152" height="184" rx="20" fill="#ffffff" stroke="#e7e9f3"/></g>
+  <!-- Works with MCP Badge -->
+  <g transform="translate(980, 52)">
+    <rect width="236" height="36" rx="18" fill="#0F172A" stroke="#1E293B" stroke-width="1.5"/>
+    <circle cx="22" cy="18" r="5" fill="#10B981"/>
+    <text x="36" y="23" class="font-sans badge-text">Works with any MCP client</text>
+  </g>
 
-  <!-- caption (left x=96) + user bubble (right edge 1184) share the top row -->
-  <text x="96" y="514" font-size="16" fill="#8a8fa8">In your AI assistant — no password, ever.</text>
-  <rect x="884" y="490" width="300" height="46" rx="14" fill="#4f46e5"/>
-  <text x="1160" y="519" font-size="18" font-weight="500" fill="#ffffff" text-anchor="end">List my notebooks</text>
+  <!-- ================= LAYOUT PANELS ================= -->
 
-  <!-- assistant bubble (left x=96) + citation chip beside it -->
-  <rect x="96" y="556" width="700" height="74" rx="14" fill="#f3f4f9" stroke="#e7e9f3"/>
-  <text x="124" y="586" font-size="18" font-weight="700" fill="#1a1c2e">You have 6 notebooks</text>
-  <text x="124" y="612" font-size="16" fill="#6b7089">Duffel Flight Offers · Hotel Search API · Air-Quality Analytics …</text>
+  <!-- LEFT PANEL: Google NotebookLM -->
+  <g transform="translate(64, 160)" filter="url(#card-shadow)">
+    <!-- Card Frame -->
+    <rect width="440" height="420" rx="24" fill="#0B1324" fill-opacity="0.6" stroke="url(#card-border)" stroke-width="1.5"/>
+    
+    <!-- Header -->
+    <g transform="translate(24, 24)">
+      <rect width="32" height="32" rx="8" fill="#10B981"/>
+      <path d="M11 11h10v2H11v-2zm0 4h10v2H11v-2zm0 4h7v2H11v-2z" fill="#FFFFFF"/>
+      <text x="44" y="22" class="font-sans panel-title">Google NotebookLM</text>
+      <text x="44" y="38" class="font-sans" font-size="12" fill="#64748B">Account Sources &amp; Studio</text>
+    </g>
 
-  <rect x="816" y="574" width="158" height="40" rx="20" fill="#eef8f0" stroke="#c9ead2"/>
-  <circle cx="842" cy="594" r="9" fill="#16a34a"/>
-  <path d="M837.5 594 l3 3 5.5 -6" stroke="#ffffff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-  <text x="860" y="600" font-size="15" font-weight="600" fill="#16a34a">cited sources</text>
+    <!-- Source Items -->
+    <g transform="translate(24, 88)">
+      <!-- Source 1 (PDF) -->
+      <g transform="translate(0, 0)">
+        <rect width="392" height="52" rx="10" fill="#0F172A" stroke="#1E293B" stroke-width="1"/>
+        <rect x="12" y="12" width="28" height="28" rx="6" fill="#EF4444" fill-opacity="0.15"/>
+        <path d="M22 20h8v8h-8z" fill="#EF4444" opacity="0.3"/>
+        <text x="21" y="30" font-family="monospace" font-size="12" font-weight="700" fill="#EF4444">PDF</text>
+        <text x="52" y="26" class="font-sans" font-size="14" font-weight="600" fill="#E2E8F0">AI_Research_Thesis.pdf</text>
+        <text x="52" y="42" class="font-sans" font-size="11" fill="#64748B">Source #1 · 24 pages · Uploaded</text>
+        <!-- Connected Tag -->
+        <rect x="300" y="14" width="80" height="24" rx="12" fill="#10B981" fill-opacity="0.1"/>
+        <text x="340" y="30" class="font-sans" font-size="11" font-weight="600" fill="#10B981" text-anchor="middle">Connected</text>
+      </g>
+
+      <!-- Source 2 (YouTube) -->
+      <g transform="translate(0, 64)">
+        <rect width="392" height="52" rx="10" fill="#0F172A" stroke="#1E293B" stroke-width="1"/>
+        <rect x="12" y="12" width="28" height="28" rx="6" fill="#F43F5E" fill-opacity="0.15"/>
+        <path d="M20 20l12 6-12 6z" fill="#F43F5E"/>
+        <text x="52" y="26" class="font-sans" font-size="14" font-weight="600" fill="#E2E8F0">Audio Overview Tutorial</text>
+        <text x="52" y="42" class="font-sans" font-size="11" fill="#64748B">Source #2 · 12:45 min · YouTube Video</text>
+        <rect x="300" y="14" width="80" height="24" rx="12" fill="#10B981" fill-opacity="0.1"/>
+        <text x="340" y="30" class="font-sans" font-size="11" font-weight="600" fill="#10B981" text-anchor="middle">Connected</text>
+      </g>
+
+      <!-- Source 3 (Web URL) -->
+      <g transform="translate(0, 128)">
+        <rect width="392" height="52" rx="10" fill="#0F172A" stroke="#1E293B" stroke-width="1"/>
+        <rect x="12" y="12" width="28" height="28" rx="6" fill="#3B82F6" fill-opacity="0.15"/>
+        <path d="M22 20h8v2h-8v-2zm-2 4h12v2H20v-2zm2 4h8v2h-8v-2z" fill="#3B82F6" opacity="0.4"/>
+        <circle cx="26" cy="26" r="6" stroke="#3B82F6" stroke-width="1.5" fill="none"/>
+        <text x="52" y="26" class="font-sans" font-size="14" font-weight="600" fill="#E2E8F0">https://modelcontextprotocol.io</text>
+        <text x="52" y="42" class="font-sans" font-size="11" fill="#64748B">Source #3 · Documentation Page</text>
+        <rect x="300" y="14" width="80" height="24" rx="12" fill="#10B981" fill-opacity="0.1"/>
+        <text x="340" y="30" class="font-sans" font-size="11" font-weight="600" fill="#10B981" text-anchor="middle">Connected</text>
+      </g>
+    </g>
+
+    <!-- Studio Content / Audio Overview Banner -->
+    <g transform="translate(24, 304)">
+      <rect width="392" height="92" rx="14" fill="#0B0F19" stroke="#10B981" stroke-opacity="0.3" stroke-width="1.5"/>
+      <text x="20" y="28" class="font-sans" font-size="13" font-weight="700" fill="#10B981" letter-spacing="1">NOTEBOOKLM STUDIO</text>
+      <text x="20" y="48" class="font-sans" font-size="16" font-weight="600" fill="#F8FAFC">Generate Studio Content</text>
+      <text x="20" y="68" class="font-sans" font-size="12" fill="#94A3B8">Create Audio Overviews, quizzes, reports via chat</text>
+      
+      <!-- Audio wave mockup -->
+      <g transform="translate(260, 20)">
+        <path d="M0 25h4v-10h2v10h4v-18h2v18h4v-6h2v6h4v-14h2v14h4v-22h2v22h4v-8h2v8h4v-14h2v14h4v-2h2v2" stroke="#10B981" stroke-width="2" stroke-linecap="round" fill="none"/>
+        <rect x="2" y="46" width="70" height="18" rx="9" fill="#10B981" fill-opacity="0.2"/>
+        <path d="M12 51l6 4-6 4v-8z" fill="#10B981"/>
+        <text x="26" y="59" class="font-sans" font-size="10" font-weight="700" fill="#10B981">LISTEN</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- MIDDLE SECTION: MCP BRIDGE & CONNECTOR -->
+  <!-- Glowing Data Pipelines -->
+  <g filter="url(#neon-glow)">
+    <path d="M504 370 C 570 370, 570 330, 616 330 H 664" stroke="url(#glow-line)" stroke-width="3" fill="none"/>
+    <path d="M504 370 H 776" stroke="url(#glow-line)" stroke-dasharray="8 8" stroke-width="2" fill="none" opacity="0.6"/>
+    <path d="M504 370 C 570 370, 570 410, 616 410 H 664" stroke="url(#glow-line)" stroke-width="3" fill="none"/>
+    <path d="M776 370 C 710 370, 710 330, 664 330" stroke="url(#glow-line)" stroke-width="3" fill="none"/>
+    <path d="M776 370 C 710 370, 710 410, 664 410" stroke="url(#glow-line)" stroke-width="3" fill="none"/>
+  </g>
+
+  <!-- Connector Node -->
+  <g transform="translate(568, 320)" filter="url(#card-shadow)">
+    <rect width="144" height="100" rx="16" fill="#0B1324" stroke="#3B82F6" stroke-width="2"/>
+    <rect x="8" y="8" width="128" height="84" rx="10" fill="#0F172A" stroke="#1E293B" stroke-width="1"/>
+    
+    <!-- Link Icon -->
+    <g transform="translate(60, 20)">
+      <path d="M -8 -4 H 8 M -8 4 H 8 M -4 -8 V 8 M 4 -8 V 8" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" fill="none"/>
+      <circle cx="0" cy="0" r="10" stroke="#10B981" stroke-width="2" fill="none"/>
+      <circle cx="0" cy="0" r="3" fill="#10B981"/>
+    </g>
+
+    <text x="72" y="66" class="font-sans" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">notebooklm-connector</text>
+    <text x="72" y="80" class="font-sans" font-size="10" font-weight="600" fill="#3B82F6" text-anchor="middle">MCP SERVER</text>
+  </g>
+
+  <!-- Secure Local Auth Badge below Connector -->
+  <g transform="translate(520, 444)">
+    <rect width="240" height="28" rx="14" fill="#0F172A" stroke="#1E293B" stroke-width="1"/>
+    <!-- Lock symbol -->
+    <path d="M102 11h6v4h-6zm1-5a2 2 0 0 1 4 0v5h-4z" stroke="#94A3B8" stroke-width="1.5" fill="none"/>
+    <text x="122" y="18" class="font-sans" font-size="11" fill="#94A3B8">Secure Local Auth · No Password</text>
+  </g>
+
+  <!-- ================= RIGHT PANEL: AI ASSISTANT / IDE ================= -->
+  <g transform="translate(776, 160)" filter="url(#card-shadow)">
+    <!-- Card Frame -->
+    <rect width="440" height="420" rx="24" fill="#0B1324" fill-opacity="0.6" stroke="url(#card-border)" stroke-width="1.5"/>
+
+    <!-- Header -->
+    <g transform="translate(24, 24)">
+      <rect width="32" height="32" rx="8" fill="#4F46E5"/>
+      <path d="M16 8l2 6 6 2-6 2-2 6-2-6-6-2 6-2z" fill="#FFFFFF"/>
+      <text x="44" y="22" class="font-sans" font-weight="700" font-size="20" fill="#F8FAFC">AI Assistant / IDE</text>
+      <text x="44" y="38" class="font-sans" font-size="12" fill="#64748B">Cursor · Claude Desktop · Claude Code · Cline</text>
+    </g>
+
+    <!-- Chat Dialogue Box Mock -->
+    <g transform="translate(24, 88)">
+      <!-- User Input -->
+      <g transform="translate(0, 0)">
+        <rect width="392" height="64" rx="14" fill="#1E293B" stroke="#334155" stroke-width="1"/>
+        <circle cx="28" cy="32" r="14" fill="#4F46E5"/>
+        <text x="28" y="37" class="font-sans" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">U</text>
+        <text x="56" y="28" class="font-sans" font-size="14" font-weight="500" fill="#F1F5F9">"Ask my Thesis notebook: what does</text>
+        <text x="56" y="46" class="font-sans" font-size="14" font-weight="500" fill="#F1F5F9">it say about neural grounding?"</text>
+      </g>
+
+      <!-- Assistant Output -->
+      <g transform="translate(0, 78)">
+        <rect width="392" height="152" rx="14" fill="#0F172A" stroke="#1E293B" stroke-width="1"/>
+        <circle cx="28" cy="28" r="14" fill="#10B981" fill-opacity="0.2"/>
+        <path d="M28 22l1 4 4 1-4 1-1 4-1-4-4-1 4-1z" fill="#10B981"/>
+        
+        <text x="56" y="28" class="font-sans bubble-ai">According to the thesis source <tspan fill="#34D399" font-weight="700">[1]</tspan>, neural grounding</text>
+        <text x="56" y="48" class="font-sans bubble-ai">bridges token representations with physical sensors.</text>
+        
+        <!-- Grounded citation detailed bullet points -->
+        <text x="56" y="76" class="font-sans bubble-ai" fill="#94A3B8">• Grounding is defined on page 12 <tspan fill="#34D399" font-weight="700">[2]</tspan>.</text>
+        <text x="56" y="96" class="font-sans bubble-ai" fill="#94A3B8">• Results show 18% improvement <tspan fill="#34D399" font-weight="700">[3]</tspan>.</text>
+
+        <!-- Cited Sources Footer inside response -->
+        <rect x="56" y="112" width="316" height="26" rx="6" fill="#10B981" fill-opacity="0.08"/>
+        <path d="M68 125l3 3 5-5" stroke="#10B981" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <text x="82" y="128" class="font-sans" font-size="11" font-weight="700" fill="#10B981">Grounded citations active</text>
+      </g>
+
+      <!-- Code Console / Tool Execution Badge -->
+      <g transform="translate(0, 244)">
+        <rect width="392" height="64" rx="12" fill="#090D16" stroke="#1E293B" stroke-width="1"/>
+        <circle cx="24" cy="32" r="6" fill="#10B981"/>
+        <text x="38" y="28" class="font-sans" font-size="12" font-weight="700" fill="#F8FAFC">mcp-server/notebooklm_ask</text>
+        <text x="38" y="46" font-family="monospace" font-size="12" fill="#38BDF8">Executing tool call in workspace...</text>
+        
+        <rect x="300" y="18" width="76" height="26" rx="6" fill="#1E293B" />
+        <text x="338" y="34" class="font-sans" font-size="11" font-weight="700" fill="#94A3B8" text-anchor="middle">SUCCESS</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- ================= COMPATIBILITY LOGOS BAR ================= -->
+  <g transform="translate(64, 600)">
+    <rect width="1152" height="48" rx="12" fill="#0B1324" stroke="#1E293B" stroke-width="1.5"/>
+    <text x="576" y="28" class="font-sans" font-size="14" font-weight="600" fill="#94A3B8" text-anchor="middle">
+      Compatible with: Claude Desktop  ·  Cursor  ·  Claude Code  ·  Windsurf  ·  Cline  ·  Codex  ·  Any standard MCP Client
+    </text>
+  </g>
+
 </svg>
