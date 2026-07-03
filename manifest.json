@@ -2,7 +2,7 @@
   "manifest_version": "0.4",
   "name": "notebooklm-connector",
   "display_name": "NotebookLM Connector",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Connect Google NotebookLM to Claude: grounded Q&A with citations, source management, and Studio content generation.",
   "long_description": "Gives Claude direct access to your Google NotebookLM account. Ask questions answered exclusively from your notebook sources (with citations), create notebooks, add sources (URLs, YouTube, text, files), and generate Studio content — Audio Overviews, reports, quizzes, flashcards, mind maps, slide decks, infographics — then download the results. Log in by telling Claude 'log in to NotebookLM': it reads your existing Google session from your browser, no password required. Uses NotebookLM's internal API via the notebooklm-py library; sessions last ~2-4 weeks.",
   "author": {
@@ -16,7 +16,29 @@
     "entry_point": "main.py",
     "mcp_config": {
       "command": "uv",
-      "args": ["run", "--directory", "${__dirname}", "main.py"]
+      "args": ["run", "--directory", "${__dirname}", "main.py"],
+      "env": {
+        "NOTEBOOKLM_THOROUGH": "${user_config.thorough}",
+        "NOTEBOOKLM_MAX_FOLLOWUPS": "${user_config.max_followups}"
+      }
+    }
+  },
+  "user_config": {
+    "thorough": {
+      "type": "boolean",
+      "title": "Thorough answers (auto-coverage)",
+      "description": "Make every answer thorough: after the first reply, automatically ask NotebookLM follow-up questions to fill gaps, then return one merged, fully-cited answer. More complete, but uses several extra queries from your daily quota (~50/day on free accounts). Leave off to trigger it per question by saying 'give me a thorough answer'.",
+      "default": false,
+      "required": false
+    },
+    "max_followups": {
+      "type": "number",
+      "title": "Max follow-up questions (thorough mode)",
+      "description": "How many gap-filling questions thorough mode may ask per answer (1–5). Each one uses a query from your daily quota.",
+      "default": 3,
+      "min": 1,
+      "max": 5,
+      "required": false
     }
   },
   "compatibility": {

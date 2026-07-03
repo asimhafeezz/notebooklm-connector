@@ -75,8 +75,9 @@ def _bool_env(name: str, default: bool = False) -> bool:
 
 DEFAULT_THOROUGH = _bool_env("NOTEBOOKLM_THOROUGH", False)
 try:
-    DEFAULT_MAX_FOLLOWUPS = max(1, min(5, int(os.environ.get("NOTEBOOKLM_MAX_FOLLOWUPS", "3"))))
-except ValueError:
+    # float() first so "3", "3.0", or a client-substituted number all parse.
+    DEFAULT_MAX_FOLLOWUPS = max(1, min(5, int(float(os.environ.get("NOTEBOOKLM_MAX_FOLLOWUPS") or "3"))))
+except (ValueError, TypeError):
     DEFAULT_MAX_FOLLOWUPS = 3
 
 
