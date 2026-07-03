@@ -1,6 +1,8 @@
 # NotebookLM Connector
 
-[![PyPI](https://img.shields.io/pypi/v/notebooklm-connector?color=4f46e5)](https://pypi.org/project/notebooklm-connector/) [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Website](https://img.shields.io/badge/website-notebooklm--connector-4f46e5)](https://notebooklm-connector-three.vercel.app) [![PyPI](https://img.shields.io/pypi/v/notebooklm-connector?color=4f46e5)](https://pypi.org/project/notebooklm-connector/) [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
+**🌐 Website: [notebooklm-connector-three.vercel.app](https://notebooklm-connector-three.vercel.app)**
 
 ![NotebookLM Connector — install, connect, and ask your Google NotebookLM notebooks from inside any AI assistant](assets/hero.png)
 
