@@ -158,6 +158,28 @@ async def notebooklm_auth_status() -> str:
     )
 
 
+def _installed_browsers() -> list[str]:
+    """Detect which supported browsers are installed (cookie DB present, macOS paths).
+
+    A cheap, prompt-free existence check — used to suggest alternatives when the
+    chosen browser has no readable session.
+    """
+    home = Path.home()
+    candidates = {
+        "chrome": "Library/Application Support/Google/Chrome/Default/Cookies",
+        "brave": "Library/Application Support/BraveSoftware/Brave-Browser/Default/Cookies",
+        "edge": "Library/Application Support/Microsoft Edge/Default/Cookies",
+        "arc": "Library/Application Support/Arc/User Data/Default/Cookies",
+        "vivaldi": "Library/Application Support/Vivaldi/Default/Cookies",
+        "opera": "Library/Application Support/com.operasoftware.Opera/Cookies",
+        "comet": "Library/Application Support/Comet/Default/Cookies",
+    }
+    found = [name for name, rel in candidates.items() if (home / rel).exists()]
+    if (home / "Library/Application Support/Firefox/Profiles").is_dir():
+        found.append("firefox")
+    return found
+
+
 async def _read_browser_raw_cookies(browser: str) -> list[dict] | str:
     """Read raw Google cookies from a browser (Comet handled specially)."""
     if browser.lower() == "comet":
@@ -444,10 +466,17 @@ async def notebooklm_login(
     if proc.returncode != 0:
         hints = []
         if method == "browser_cookies":
+            installed = [b for b in _installed_browsers() if b != browser]
+            others = (
+                f"Other browsers you have installed: {', '.join(installed)} — say "
+                f"“connect using {installed[0]}” to try one. "
+                if installed
+                else ""
+            )
             hints.append(
-                "Common causes: the browser has no signed-in Google session, or (macOS) Keychain "
-                "access was denied. Try again, try another browser (brave/edge/arc/firefox/safari), "
-                "or retry with method='interactive' to sign in via a browser window."
+                f"Common causes: {browser} has no signed-in Google session, or (macOS) Keychain "
+                f"access was denied. {others}"
+                "Or retry with method='interactive' to sign in via a browser window."
             )
         else:
             hints.append("The user may have closed the window before login completed.")
