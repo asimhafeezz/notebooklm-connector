@@ -20,18 +20,18 @@ Pick your app below. Then in a chat, say **“Connect my NotebookLM”**, choose
 
 ### Cursor — one click
 
-[![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/install-mcp?name=notebooklm&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyJub3RlYm9va2xtLWNvbm5lY3RvciJdfQ==)
+[![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/install-mcp?name=notebooklm&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyItLXB5dGhvbiIsIjMuMTIiLCJub3RlYm9va2xtLWNvbm5lY3RvciJdfQ==)
 
 ### Codex — one line
 
 ```bash
-codex mcp add notebooklm -- uvx notebooklm-connector
+codex mcp add notebooklm -- uvx --python 3.12 notebooklm-connector
 ```
 
 ### Claude Code — one line
 
 ```bash
-claude mcp add notebooklm -- uvx notebooklm-connector
+claude mcp add notebooklm -- uvx --python 3.12 notebooklm-connector
 ```
 
 ### Google Antigravity
@@ -41,7 +41,7 @@ In the agent side panel: **⋯ → MCP Servers → Manage MCP Servers → View r
 ```json
 {
   "mcpServers": {
-    "notebooklm": { "command": "uvx", "args": ["notebooklm-connector"] }
+    "notebooklm": { "command": "uvx", "args": ["--python", "3.12", "notebooklm-connector"] }
   }
 }
 ```
@@ -50,7 +50,11 @@ In the agent side panel: **⋯ → MCP Servers → Manage MCP Servers → View r
 
 Add the same `mcpServers` entry shown above to the client’s MCP config.
 
-Every non-Claude-Desktop option runs the same command, **`uvx notebooklm-connector`**, which fetches the connector [from PyPI](https://pypi.org/project/notebooklm-connector/) — nothing to clone.
+Every non-Claude-Desktop option runs the same command, **`uvx --python 3.12 notebooklm-connector`**, which fetches the connector [from PyPI](https://pypi.org/project/notebooklm-connector/) — nothing to clone. (The `--python 3.12` is required — a dependency has no prebuilt wheel for Python 3.13 yet.)
+
+> **Troubleshooting “Connection closed” / server won’t start:**
+> - **Most common:** make sure the command includes `--python 3.12` (above). Without it, the install fails trying to compile on Python 3.13.
+> - **“command not found”:** your app can’t find `uvx` on its PATH. Use the full path instead — find it with `which uvx` (e.g. `/opt/homebrew/bin/uvx`) and use that as the `command`.
 
 ## What you can ask
 
