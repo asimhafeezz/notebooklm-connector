@@ -14,3 +14,4 @@ wheels/
 
 # Local NotebookLM session (never commit auth cookies)
 .notebooklm/
+.vercel
