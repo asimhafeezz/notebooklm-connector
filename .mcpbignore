@@ -6,3 +6,5 @@ __pycache__/
 install.sh
 .claude/
 .mcpbignore
+assets/
+.DS_Store

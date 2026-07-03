@@ -58,8 +58,15 @@ Every non-Claude-Desktop option runs the same command, **`uvx notebooklm-connect
 - *“Create a notebook called ‘Competitor research’ and add these three URLs as sources.”*
 - *“Make an audio overview of my Onboarding notebook about deployment, then save it to my Desktop.”*
 - *“Give me a quiz from my Biology notebook.”*
+- *“Give me a **thorough** answer on the auth flow.”* — turns on auto-coverage (below).
 
 That’s **13 tools** under the hood: connect/login, list & create notebooks, add sources (URLs, YouTube, text, files), ask questions with citations, and generate + download Studio content (audio, video, reports, quizzes, flashcards, mind maps, slide decks, infographics, data tables).
+
+## Thorough mode (auto-coverage)
+
+Ask for a *“thorough”* or *“complete”* answer and the connector runs **auto-coverage**: after the first answer, it asks NotebookLM which parts of your question weren’t fully covered, automatically asks those follow-ups, and returns one merged, more complete answer — all still cited to your sources.
+
+Off by default (it uses several extra queries from the daily quota). Turn it on per question (“give me a thorough answer”), or always-on by setting `NOTEBOOKLM_THOROUGH=1` in the server’s env. Tune the depth with `NOTEBOOKLM_MAX_FOLLOWUPS` (default 3).
 
 ## Good to know
 

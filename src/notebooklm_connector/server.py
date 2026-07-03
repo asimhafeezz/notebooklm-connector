@@ -10,6 +10,8 @@ source-grounded Q&A with citations, and Studio content generation
 from __future__ import annotations
 
 import asyncio
+import os
+import re
 import sys
 from pathlib import Path
 from typing import Annotated, Any, Literal
@@ -57,6 +59,61 @@ def _fmt_generation(status: Any) -> str:
     if status.error:
         lines.append(f"- error: {status.error}")
     return "\n".join(lines)
+
+
+# ---------------------------------------------------------------------------
+# thorough-mode (auto coverage follow-up) configuration and helpers
+# ---------------------------------------------------------------------------
+
+
+def _bool_env(name: str, default: bool = False) -> bool:
+    v = os.environ.get(name)
+    if v is None:
+        return default
+    return v.strip().lower() in ("1", "true", "yes", "on")
+
+
+DEFAULT_THOROUGH = _bool_env("NOTEBOOKLM_THOROUGH", False)
+try:
+    DEFAULT_MAX_FOLLOWUPS = max(1, min(5, int(os.environ.get("NOTEBOOKLM_MAX_FOLLOWUPS", "3"))))
+except ValueError:
+    DEFAULT_MAX_FOLLOWUPS = 3
+
+
+def _collect_citations(result: Any, by_source: dict[str, list[str]]) -> None:
+    """Fold an answer's cited passages into a source_id -> snippets map."""
+    for ref in result.references or []:
+        snippet = (ref.cited_text or "").strip().replace("\n", " ")
+        if len(snippet) > 200:
+            snippet = snippet[:200] + "…"
+        by_source.setdefault(ref.source_id, [])
+        if snippet and snippet not in by_source[ref.source_id]:
+            by_source[ref.source_id].append(snippet)
+
+
+def _render_citations(by_source: dict[str, list[str]], titles: dict[str, str]) -> list[str]:
+    if not by_source:
+        return []
+    lines = ["", "## Citations"]
+    for sid, snippets in by_source.items():
+        lines.append(f"- **{titles.get(sid, sid)}** (`{sid}`)")
+        lines += [f'  - "{sn}"' for sn in snippets[:3]]
+    return lines
+
+
+def _parse_followups(text: str, limit: int) -> list[str]:
+    """Extract follow-up questions from NotebookLM's gap-analysis reply."""
+    text = (text or "").strip()
+    if not text or text.upper().startswith("NONE"):
+        return []
+    questions: list[str] = []
+    for line in text.splitlines():
+        line = re.sub(r"^[\-\*\d\.\)\(\s]+", "", line).strip()
+        if len(line) > 8 and line not in questions:
+            questions.append(line)
+        if len(questions) >= limit:
+            break
+    return questions
 
 
 # ---------------------------------------------------------------------------
@@ -506,6 +563,14 @@ async def notebooklm_ask(
         str | None,
         Field(description="Pass the conversation_id from a previous answer to ask a follow-up in the same conversation"),
     ] = None,
+    thorough: Annotated[
+        bool | None,
+        Field(description="Auto-coverage mode: after the first answer, have NotebookLM find gaps and auto-ask follow-ups, then return a combined, more complete answer. Slower and uses several extra queries from the daily quota. Use when the user wants a thorough/deep/complete answer. Default off (set by NOTEBOOKLM_THOROUGH env var)"),
+    ] = None,
+    max_followups: Annotated[
+        int,
+        Field(description="In thorough mode, the maximum number of auto follow-up questions (each costs one query)", ge=1, le=5),
+    ] = DEFAULT_MAX_FOLLOWUPS,
 ) -> str:
     """Ask a question and get an answer grounded exclusively in the notebook's sources.
 
@@ -514,38 +579,73 @@ async def notebooklm_ask(
     research over the user's own documents. Counts against the account's daily
     chat quota (~50/day on free accounts).
 
+    With thorough=true, runs auto-coverage: after the first answer it asks
+    NotebookLM which aspects of the question were not fully covered, then
+    automatically asks those follow-ups (up to max_followups) in the same
+    conversation and returns one merged answer. This gives more complete
+    results at the cost of extra quota and latency — prefer it only when the
+    user explicitly wants a deep/thorough answer.
+
     Returns:
-        str: Markdown with the answer, a conversation_id for follow-up
-        questions, and a Citations section mapping each cited source
-        (title + source ID) with the quoted passage snippets.
+        str: Markdown with the answer (or merged answer in thorough mode), a
+        conversation_id for follow-up questions, and a Citations section
+        mapping each cited source (title + source ID) with quoted snippets.
     """
+    use_thorough = DEFAULT_THOROUGH if thorough is None else thorough
     try:
         client = await get_client()
         result = await client.chat.ask(
             notebook_id, question, source_ids=source_ids, conversation_id=conversation_id
         )
-    except Exception as e:
-        return format_error(e)
-
-    lines = [result.answer.strip(), "", f"_conversation_id: `{result.conversation_id}` (pass back for follow-ups)_"]
-    if result.references:
-        # map source ids to titles for readable citations
+        titles: dict[str, str] = {}
         try:
             titles = {s.id: (s.title or s.id) for s in await client.sources.list(notebook_id)}
         except Exception:
             titles = {}
-        by_source: dict[str, list[str]] = {}
-        for ref in result.references:
-            snippet = (ref.cited_text or "").strip().replace("\n", " ")
-            if len(snippet) > 200:
-                snippet = snippet[:200] + "…"
-            by_source.setdefault(ref.source_id, [])
-            if snippet and snippet not in by_source[ref.source_id]:
-                by_source[ref.source_id].append(snippet)
-        lines += ["", "## Citations"]
-        for sid, snippets in by_source.items():
-            lines.append(f"- **{titles.get(sid, sid)}** (`{sid}`)")
-            lines += [f'  - "{sn}"' for sn in snippets[:3]]
+    except Exception as e:
+        return format_error(e)
+
+    by_source: dict[str, list[str]] = {}
+    _collect_citations(result, by_source)
+
+    # Simple (default) path.
+    if not use_thorough:
+        lines = [result.answer.strip(), "", f"_conversation_id: `{result.conversation_id}` (pass back for follow-ups)_"]
+        lines += _render_citations(by_source, titles)
+        return "\n".join(lines)
+
+    # Thorough path: detect gaps, auto-ask follow-ups, merge.
+    conv = result.conversation_id
+    sections = [f"## Answer\n{result.answer.strip()}"]
+    followups_done: list[str] = []
+    try:
+        meta_q = (
+            f'Reviewing your previous answer to my question: "{question}". '
+            f"List up to {max_followups} specific follow-up questions whose answers are in "
+            "the sources but were missing or only partially covered in that answer. "
+            "Reply with a plain numbered list of questions only, no preamble. "
+            "If the previous answer already fully covered the question, reply with exactly: NONE"
+        )
+        meta = await client.chat.ask(notebook_id, meta_q, source_ids=source_ids, conversation_id=conv)
+        conv = meta.conversation_id
+        for fq in _parse_followups(meta.answer, max_followups):
+            fr = await client.chat.ask(notebook_id, fq, source_ids=source_ids, conversation_id=conv)
+            conv = fr.conversation_id
+            _collect_citations(fr, by_source)
+            sections.append(f"### {fq}\n{fr.answer.strip()}")
+            followups_done.append(fq)
+    except Exception:
+        # Any failure mid-coverage: keep whatever we have, don't lose the main answer.
+        pass
+
+    header = (
+        f"_Thorough mode: asked {len(followups_done)} auto follow-up(s) to fill gaps._"
+        if followups_done
+        else "_Thorough mode: the first answer already covered the question._"
+    )
+    lines = [header, ""] + ["\n\n".join(sections)]
+    lines += ["", f"_conversation_id: `{conv}` (pass back for follow-ups)_"]
+    lines += _render_citations(by_source, titles)
     return "\n".join(lines)
 
 
