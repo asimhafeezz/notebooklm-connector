@@ -75,6 +75,8 @@ Off by default (it uses several extra queries from the daily quota). Turn it on 
 ## Good to know
 
 - **No password, ever** — the connector reuses the Google account you’re already signed into in your browser. On Mac, approve the one-time Keychain popup.
+- **Supported browsers** — Chrome, Brave, Edge, Arc, Opera, Vivaldi, Firefox, LibreWolf, Zen, Safari. Just say which one (*“connect using Brave”*).
+  On an unsupported browser (e.g. Comet)? Sign in to [notebooklm.google.com](https://notebooklm.google.com) once in any supported browser (Safari is on every Mac), then *“connect using Safari.”* Or use the interactive sign-in window (`uv sync --extra interactive-login && uv run playwright install chromium`, then *“log in interactively”*).
 - **Sessions last ~2–4 weeks.** When it stops working, just say “Connect my NotebookLM” again.
 - **Free NotebookLM accounts** allow about 50 questions per day.
 - **It’s your own account** — use it as you normally would.
