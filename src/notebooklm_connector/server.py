@@ -158,9 +158,17 @@ async def notebooklm_auth_status() -> str:
     )
 
 
-async def _enumerate_browser_google_accounts(browser: str) -> list[Any] | str:
-    """Read Google accounts signed in to a local browser. Returns accounts or an error string."""
-    from notebooklm import auth as nlm_auth
+async def _read_browser_raw_cookies(browser: str) -> list[dict] | str:
+    """Read raw Google cookies from a browser (Comet handled specially)."""
+    if browser.lower() == "comet":
+        from . import comet
+
+        if not comet.is_available():
+            return (
+                "Comet is not installed (no cookie database found). Sign in to "
+                "notebooklm.google.com in Chrome, Brave, or Firefox and connect using that."
+            )
+        return await asyncio.to_thread(comet.read_comet_cookies)
     from notebooklm.cli.services.login import _read_browser_cookies
 
     raw = await asyncio.to_thread(_read_browser_cookies, browser, verbose=False)
@@ -170,9 +178,88 @@ async def _enumerate_browser_google_accounts(browser: str) -> list[Any] | str:
             "The browser may not be installed or has no Google session. Try another "
             "browser, or use notebooklm_login with method='interactive'."
         )
+    return raw
+
+
+async def _enumerate_browser_google_accounts(browser: str) -> list[Any] | str:
+    """Read Google accounts signed in to a local browser. Returns accounts or an error string."""
+    from notebooklm import auth as nlm_auth
+
+    raw = await _read_browser_raw_cookies(browser)
+    if isinstance(raw, str):
+        return raw
     storage_state = nlm_auth.convert_rookiepy_cookies_to_storage_state(raw)
     jar = nlm_auth.build_cookie_jar(cookies=nlm_auth.extract_cookies_with_domains(storage_state))
-    return await nlm_auth.enumerate_accounts(jar)
+    try:
+        return await nlm_auth.enumerate_accounts(jar)
+    except Exception:
+        return (
+            f"Found cookies in {browser}, but its Google session is logged out or expired. "
+            f"Open notebooklm.google.com in {browser} and sign in to Google, then try again."
+        )
+
+
+async def _login_comet(account: str | None) -> str:
+    """Log in using cookies read from Comet, optionally routing to a chosen account."""
+    import json
+
+    from notebooklm import auth as nlm_auth
+    from . import comet
+
+    if not comet.is_available():
+        return (
+            "Comet is not installed (no cookie database found). Instead, sign in to "
+            "notebooklm.google.com in Chrome, Brave, or Firefox and connect using that browser."
+        )
+    try:
+        raw = await asyncio.to_thread(comet.read_comet_cookies)
+    except Exception as e:
+        return format_error(e)
+
+    storage_state, err = nlm_auth.validate_with_recovery(raw)
+    if err is not None:
+        names = nlm_auth.cookie_names_from_storage(storage_state)
+        return (
+            f"Error: no valid Google session found in Comet ({err}). "
+            f"{nlm_auth.missing_cookies_hint(names, browser_label='Comet')}"
+        )
+
+    path = nlm_paths.get_storage_path(profile=profile())
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with open(path, "w") as f:
+        json.dump(storage_state, f)
+    os.chmod(path, 0o600)
+
+    # Route to a specific account if requested (multiple Google accounts share
+    # one Comet cookie store, distinguished by authuser index).
+    authuser, chosen_email = 0, None
+    if account:
+        try:
+            jar = nlm_auth.build_cookie_jar(cookies=nlm_auth.extract_cookies_with_domains(storage_state))
+            for a in await nlm_auth.enumerate_accounts(jar):
+                if a.email.lower() == account.lower():
+                    authuser, chosen_email = a.authuser, a.email
+                    break
+        except Exception:
+            pass
+    try:
+        nlm_auth.write_account_metadata(path, authuser=authuser, email=chosen_email)
+    except Exception:
+        pass
+
+    await reset_client()
+    try:
+        client = await get_client()
+        notebooks = await client.notebooks.list()
+    except Exception as e:
+        await reset_client()
+        return (
+            "Read the Google cookies from Comet, but NotebookLM rejected the session — "
+            "it looks logged out or expired in Comet. Open notebooklm.google.com in Comet, "
+            f"sign in to Google, then run this again.\n(details: {format_error(e)})"
+        )
+    who = f" as {chosen_email}" if chosen_email else ""
+    return f"Logged in via Comet{who}. The account has {len(notebooks)} notebook(s). Sessions last ~2-4 weeks."
 
 
 @mcp.tool(
@@ -186,7 +273,7 @@ async def _enumerate_browser_google_accounts(browser: str) -> list[Any] | str:
 async def notebooklm_list_google_accounts(
     browser: Annotated[
         str,
-        Field(description="Browser to inspect: chrome, brave, edge, arc, firefox, safari, or 'auto'"),
+        Field(description="Browser to inspect: chrome, brave, edge, arc, firefox, safari, comet, or 'auto'"),
     ] = "chrome",
 ) -> str:
     """List the Google accounts currently signed in to the user's browser.
@@ -242,8 +329,8 @@ async def notebooklm_login(
     browser: Annotated[
         str,
         Field(
-            description="Which browser. For browser_cookies: chrome, brave, edge, arc, firefox, safari "
-            "(optionally with profile, e.g. 'chrome::Profile 1'). For interactive: chrome, chromium, or msedge"
+            description="Which browser. For browser_cookies: chrome, brave, edge, arc, firefox, safari, "
+            "comet (optionally with profile, e.g. 'chrome::Profile 1'). For interactive: chrome, chromium, or msedge"
         ),
     ] = "chrome",
     account: Annotated[
@@ -301,6 +388,11 @@ async def notebooklm_login(
                     "Ask the user which one to connect, then call notebooklm_login again "
                     "with that email as `account`."
                 )
+
+    # Comet (Perplexity's browser) isn't supported by the cookie reader the CLI
+    # uses, so handle it in-process with our own Chromium cookie decryption.
+    if method == "browser_cookies" and browser.lower() == "comet":
+        return await _login_comet(account)
 
     cmd = [sys.executable, "-m", "notebooklm", "login"]
     if method == "browser_cookies":
