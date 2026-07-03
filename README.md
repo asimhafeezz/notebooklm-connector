@@ -102,11 +102,9 @@ The connector logs in by reading your existing Google session from a browser. Wh
 
 ## How it works
 
-```
-Your AI assistant ──MCP──► notebooklm-connector ──► notebooklm-py ──► NotebookLM’s internal API
-```
+![Architecture: you → AI assistant → notebooklm-connector (the MCP server, built here) → notebooklm-py → Google NotebookLM, with a login side-channel that reads your browser's Google session](assets/architecture.png)
 
-Auth is your browser’s existing Google session, read locally on your machine. Nothing is sent anywhere except to NotebookLM itself. It runs entirely on your computer.
+`notebooklm-connector` (this project) is the **MCP server** — the piece your AI assistant talks to and the one that adds the 13 tools, thorough mode, and login. It *uses* [notebooklm-py](https://github.com/teng-lin/notebooklm-py), a library that speaks NotebookLM’s internal API, to do the actual talking to Google. Auth is your browser’s existing Google session, read locally on your machine. Nothing is sent anywhere except to NotebookLM itself — it runs entirely on your computer.
 
 ## Security & privacy
 

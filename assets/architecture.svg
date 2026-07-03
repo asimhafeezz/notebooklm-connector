@@ -1,0 +1,90 @@
+<svg width="1280" height="660" viewBox="0 0 1280 660" fill="none" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1280" y2="660" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0A0E17"/>
+      <stop offset="0.5" stop-color="#0F1424"/>
+      <stop offset="1" stop-color="#070A0F"/>
+    </linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0 L0 0 0 40" fill="none" stroke="#ffffff" stroke-width="1" stroke-opacity="0.03"/>
+    </pattern>
+    <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M2 1 L8 5 L2 9" fill="none" stroke="#475569" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <rect width="1280" height="660" fill="url(#bg)"/>
+  <rect width="1280" height="660" fill="url(#grid)"/>
+
+  <text x="48" y="72" font-size="30" font-weight="700" fill="#F8FAFC">how it works</text>
+  <text x="48" y="104" font-size="16" fill="#94A3B8">You talk to an AI assistant → it calls the MCP server we built → which uses notebooklm-py → to reach Google NotebookLM.</text>
+
+  <!-- pipeline row: 5 boxes, x = 40 / 290 / 540 / 790 / 1040, w=200, y=170 h=132 -->
+
+  <!-- box 1: you -->
+  <rect x="40" y="170" width="200" height="132" rx="16" fill="#0B1324" stroke="#64748B" stroke-opacity="0.5"/>
+  <circle cx="62" cy="196" r="5" fill="#64748B"/>
+  <text x="58" y="228" font-size="16" font-weight="700" fill="#F8FAFC">you</text>
+  <text x="58" y="254" font-size="12.5" fill="#94A3B8">ask in plain language</text>
+
+  <!-- box 2: ai assistant -->
+  <rect x="290" y="170" width="200" height="132" rx="16" fill="#0B1324" stroke="#3B82F6" stroke-opacity="0.5"/>
+  <circle cx="312" cy="196" r="5" fill="#3B82F6"/>
+  <text x="308" y="228" font-size="16" font-weight="700" fill="#F8FAFC">ai assistant</text>
+  <text x="308" y="252" font-size="12.5" fill="#94A3B8">claude · cursor ·</text>
+  <text x="308" y="270" font-size="12.5" fill="#94A3B8">codex · antigravity</text>
+
+  <!-- box 3: connector (built here, highlighted) -->
+  <rect x="540" y="162" width="200" height="148" rx="16" fill="#141B33" stroke="#4F46E5" stroke-width="1.6"/>
+  <rect x="626" y="172" width="102" height="24" rx="12" fill="#4F46E5"/>
+  <text x="677" y="188" font-size="11.5" font-weight="700" fill="#FFFFFF" text-anchor="middle">built here</text>
+  <circle cx="562" cy="196" r="5" fill="#4F46E5"/>
+  <text x="558" y="228" font-size="14" font-weight="700" fill="#F8FAFC">notebooklm-connector</text>
+  <text x="558" y="252" font-size="12.5" fill="#94A3B8">the mcp server</text>
+  <text x="558" y="284" font-size="12" fill="#818CF8">13 tools · thorough · login</text>
+
+  <!-- box 4: notebooklm-py -->
+  <rect x="790" y="170" width="200" height="132" rx="16" fill="#0B1324" stroke="#94A3B8" stroke-opacity="0.45"/>
+  <circle cx="812" cy="196" r="5" fill="#94A3B8"/>
+  <text x="808" y="228" font-size="14" font-weight="700" fill="#F8FAFC">notebooklm-py</text>
+  <text x="808" y="252" font-size="12.5" fill="#94A3B8">library we use</text>
+  <text x="808" y="284" font-size="12" fill="#64748B">speaks the private api</text>
+
+  <!-- box 5: google notebooklm -->
+  <rect x="1040" y="170" width="200" height="132" rx="16" fill="#0B1324" stroke="#10B981" stroke-opacity="0.5"/>
+  <circle cx="1062" cy="196" r="5" fill="#10B981"/>
+  <text x="1058" y="228" font-size="15" font-weight="700" fill="#F8FAFC">google notebooklm</text>
+  <text x="1058" y="252" font-size="12.5" fill="#94A3B8">your notebooks</text>
+  <text x="1058" y="270" font-size="12.5" fill="#94A3B8">&amp; sources</text>
+
+  <!-- arrows between boxes (y=236) -->
+  <g stroke="#475569" stroke-width="1.8">
+    <line x1="240" y1="236" x2="288" y2="236" marker-end="url(#ar)"/>
+    <line x1="490" y1="236" x2="538" y2="236" marker-end="url(#ar)"/>
+    <line x1="740" y1="236" x2="788" y2="236" marker-end="url(#ar)"/>
+    <line x1="990" y1="236" x2="1038" y2="236" marker-end="url(#ar)"/>
+  </g>
+  <text x="515" y="228" font-size="11.5" fill="#64748B" text-anchor="middle">mcp</text>
+  <text x="765" y="228" font-size="11.5" fill="#64748B" text-anchor="middle">calls</text>
+  <text x="1015" y="228" font-size="11.5" fill="#64748B" text-anchor="middle">https</text>
+
+  <!-- login side-channel below connector -->
+  <rect x="510" y="392" width="260" height="124" rx="16" fill="#0B1324" stroke="#F59E0B" stroke-opacity="0.5"/>
+  <circle cx="530" cy="416" r="5" fill="#F59E0B"/>
+  <text x="526" y="446" font-size="14" font-weight="700" fill="#F8FAFC">login (side channel)</text>
+  <text x="526" y="470" font-size="12.5" fill="#94A3B8">reads your google session cookies</text>
+  <text x="526" y="488" font-size="12" fill="#64748B">from your browser (chrome · comet ·</text>
+  <text x="526" y="506" font-size="12" fill="#64748B">safari) via the os keychain</text>
+  <line x1="640" y1="392" x2="640" y2="312" stroke="#475569" stroke-width="1.8" marker-end="url(#ar)"/>
+  <text x="654" y="356" font-size="11.5" fill="#64748B">cookies</text>
+
+  <!-- legend -->
+  <circle cx="52" cy="576" r="5" fill="#4F46E5"/>
+  <text x="66" y="581" font-size="13" fill="#94A3B8">built here (our code)</text>
+  <circle cx="270" cy="576" r="5" fill="#94A3B8"/>
+  <text x="284" y="581" font-size="13" fill="#94A3B8">library we depend on</text>
+  <circle cx="490" cy="576" r="5" fill="#10B981"/>
+  <text x="504" y="581" font-size="13" fill="#94A3B8">google's service</text>
+
+  <text x="48" y="624" font-size="12.5" fill="#64748B">Everything runs on your machine. Nothing leaves it except the calls to NotebookLM — the same server your browser already talks to.</text>
+</svg>
