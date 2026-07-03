@@ -34,7 +34,9 @@ codex mcp add notebooklm -- uvx notebooklm-connector
 claude mcp add notebooklm -- uvx notebooklm-connector
 ```
 
-### Any other MCP client (Windsurf, Cline, …) — add to its MCP config
+### Google Antigravity
+
+In the agent side panel: **⋯ → MCP Servers → Manage MCP Servers → View raw config**, then add the entry below. (Config file: `~/.gemini/config/mcp_config.json`.)
 
 ```json
 {
@@ -43,6 +45,10 @@ claude mcp add notebooklm -- uvx notebooklm-connector
   }
 }
 ```
+
+### Any other MCP client (Windsurf, Cline, …)
+
+Add the same `mcpServers` entry shown above to the client’s MCP config.
 
 Every non-Claude-Desktop option runs the same command, **`uvx notebooklm-connector`**, which fetches the connector [from PyPI](https://pypi.org/project/notebooklm-connector/) — nothing to clone.
 
