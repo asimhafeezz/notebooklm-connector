@@ -96,6 +96,8 @@ The connector logs in by reading your existing Google session from a browser. Wh
 
 > Developed and fully tested on **macOS**. The cross-platform browsers above also work on Windows/Linux (via [rookiepy](https://github.com/thewh1teagle/rookie)); Comet and Safari are macOS-only.
 
+**On Linux (Ubuntu, etc.):** Chrome/Chromium/Brave/Edge/Firefox all work. Chromium stores its cookie key in **GNOME Keyring** or **KWallet** (the Linux equivalent of the macOS Keychain), and the connector reads it from there. On a headless box or with no keyring, Chromium uses its keyring-free “basic” store — which decrypts with a well-known key, so it still works with no secret prompt. If a browser can’t be read for any reason, the interactive sign-in window works on every OS.
+
 **Which browser does it use?** By default it tries **Chrome** — it does **not** read your OS’s default-browser setting. Tell it which browser to use in plain language (*“connect using Brave”*, *“connect using Comet”*) and it uses that one instead.
 
 **Browser we can’t read (Atlas, or anything not listed)?** Some browsers (like OpenAI’s Atlas) encrypt cookies with a key locked to the app itself — a deliberate anti-malware protection that blocks all external readers, including this one. For those: sign in to [notebooklm.google.com](https://notebooklm.google.com) once in any supported browser (Chrome/Brave/Firefox/Comet) and *“connect using Brave”*, or use the interactive sign-in window (`uv sync --extra interactive-login && uv run playwright install chromium`, then *“log in interactively”*) which works regardless of your daily browser.

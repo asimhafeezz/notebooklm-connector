@@ -160,23 +160,37 @@ async def notebooklm_auth_status() -> str:
 
 
 def _installed_browsers() -> list[str]:
-    """Detect which supported browsers are installed (cookie DB present, macOS paths).
+    """Detect which supported browsers are installed (cookie DB present).
 
     A cheap, prompt-free existence check — used to suggest alternatives when the
-    chosen browser has no readable session.
+    chosen browser has no readable session. Handles macOS and Linux paths.
     """
     home = Path.home()
-    candidates = {
-        "chrome": "Library/Application Support/Google/Chrome/Default/Cookies",
-        "brave": "Library/Application Support/BraveSoftware/Brave-Browser/Default/Cookies",
-        "edge": "Library/Application Support/Microsoft Edge/Default/Cookies",
-        "arc": "Library/Application Support/Arc/User Data/Default/Cookies",
-        "vivaldi": "Library/Application Support/Vivaldi/Default/Cookies",
-        "opera": "Library/Application Support/com.operasoftware.Opera/Cookies",
-        "comet": "Library/Application Support/Comet/Default/Cookies",
-    }
+    if sys.platform == "darwin":
+        candidates = {
+            "chrome": "Library/Application Support/Google/Chrome/Default/Cookies",
+            "brave": "Library/Application Support/BraveSoftware/Brave-Browser/Default/Cookies",
+            "edge": "Library/Application Support/Microsoft Edge/Default/Cookies",
+            "arc": "Library/Application Support/Arc/User Data/Default/Cookies",
+            "vivaldi": "Library/Application Support/Vivaldi/Default/Cookies",
+            "opera": "Library/Application Support/com.operasoftware.Opera/Cookies",
+            "comet": "Library/Application Support/Comet/Default/Cookies",
+        }
+        firefox_dir = "Library/Application Support/Firefox/Profiles"
+    elif sys.platform.startswith("linux"):
+        candidates = {
+            "chrome": ".config/google-chrome/Default/Cookies",
+            "chromium": ".config/chromium/Default/Cookies",
+            "brave": ".config/BraveSoftware/Brave-Browser/Default/Cookies",
+            "edge": ".config/microsoft-edge/Default/Cookies",
+            "vivaldi": ".config/vivaldi/Default/Cookies",
+            "opera": ".config/opera/Cookies",
+        }
+        firefox_dir = ".mozilla/firefox"
+    else:
+        return []
     found = [name for name, rel in candidates.items() if (home / rel).exists()]
-    if (home / "Library/Application Support/Firefox/Profiles").is_dir():
+    if (home / firefox_dir).is_dir():
         found.append("firefox")
     return found
 
