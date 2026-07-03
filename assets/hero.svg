@@ -4,93 +4,89 @@
       <stop offset="0" stop-color="#f7f8ff"/>
       <stop offset="1" stop-color="#eaeefb"/>
     </linearGradient>
-    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="160%">
       <feDropShadow dx="0" dy="6" stdDeviation="12" flood-color="#3b3f66" flood-opacity="0.10"/>
     </filter>
   </defs>
 
   <rect width="1280" height="680" fill="url(#bg)"/>
 
-  <!-- Header -->
-  <text x="64" y="82" font-size="46" font-weight="700" fill="#1a1c2e">NotebookLM Connector</text>
-  <text x="66" y="122" font-size="22" font-weight="400" fill="#5b6079">Your Google NotebookLM notebooks — inside any AI assistant.</text>
+  <!-- Header (left edge x=64, aligned) -->
+  <text x="64" y="84" font-size="46" font-weight="700" fill="#1a1c2e">NotebookLM Connector</text>
+  <text x="64" y="124" font-size="22" font-weight="400" fill="#5b6079">Your Google NotebookLM notebooks — inside any AI assistant.</text>
 
-  <!-- badge -->
-  <rect x="948" y="48" width="268" height="40" rx="20" fill="#eef0fe" stroke="#d9ddfa"/>
-  <circle cx="974" cy="68" r="5" fill="#16a34a"/>
-  <text x="990" y="74" font-size="16" font-weight="600" fill="#4f46e5">Works with any MCP client</text>
+  <!-- badge (right edge x=1216, aligned with cards) -->
+  <rect x="948" y="52" width="268" height="42" rx="21" fill="#eef0fe" stroke="#d9ddfa"/>
+  <circle cx="975" cy="73" r="5" fill="#16a34a"/>
+  <text x="991" y="79" font-size="16" font-weight="600" fill="#4f46e5">Works with any MCP client</text>
 
-  <!-- ============ STEP CARDS ============ -->
-  <!-- card 1 -->
+  <!-- ============ STEP CARDS: x=64/464/864, w=352, y=168 h=182 ============ -->
+  <!-- badge cy and icon cy both = 210; title y=292; body y=324/348; text left x=cardX+32 -->
+
+  <!-- CARD 1 -->
   <g filter="url(#shadow)"><rect x="64" y="168" width="352" height="182" rx="20" fill="#ffffff" stroke="#e7e9f3"/></g>
-  <circle cx="104" cy="208" r="20" fill="#4f46e5"/>
-  <text x="104" y="215" font-size="20" font-weight="700" fill="#ffffff" text-anchor="middle">1</text>
-  <!-- install icon: box with plus -->
-  <g stroke="#4f46e5" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" fill="none">
-    <rect x="282" y="186" width="40" height="40" rx="9"/>
-    <path d="M302 197 v18 M293 206 h18"/>
+  <circle cx="116" cy="210" r="20" fill="#4f46e5"/>
+  <text x="116" y="217" font-size="20" font-weight="700" fill="#ffffff" text-anchor="middle">1</text>
+  <g stroke="#4f46e5" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <rect x="344" y="190" width="40" height="40" rx="10"/>
+    <path d="M364 201 v18 M355 210 h18"/>
   </g>
-  <text x="96" y="288" font-size="24" font-weight="700" fill="#1a1c2e">Install</text>
-  <text x="96" y="320" font-size="18" fill="#6b7089">Add it to your app — a file,</text>
-  <text x="96" y="344" font-size="18" fill="#6b7089">a button, or one command.</text>
+  <text x="96" y="292" font-size="25" font-weight="700" fill="#1a1c2e">Install</text>
+  <text x="96" y="324" font-size="18" fill="#6b7089">Add it to your app — a file,</text>
+  <text x="96" y="348" font-size="18" fill="#6b7089">a button, or one command.</text>
 
-  <!-- arrow 1->2 -->
-  <path d="M430 259 h32" stroke="#b9bede" stroke-width="3.2" stroke-linecap="round"/>
-  <path d="M456 251 l10 8 -10 8" stroke="#b9bede" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-
-  <!-- card 2 -->
+  <!-- CARD 2 -->
   <g filter="url(#shadow)"><rect x="464" y="168" width="352" height="182" rx="20" fill="#ffffff" stroke="#e7e9f3"/></g>
-  <circle cx="504" cy="208" r="20" fill="#4f46e5"/>
-  <text x="504" y="215" font-size="20" font-weight="700" fill="#ffffff" text-anchor="middle">2</text>
-  <!-- account/check icon -->
+  <circle cx="516" cy="210" r="20" fill="#4f46e5"/>
+  <text x="516" y="217" font-size="20" font-weight="700" fill="#ffffff" text-anchor="middle">2</text>
   <g fill="none">
-    <circle cx="700" cy="216" r="15" stroke="#4f46e5" stroke-width="3.4"/>
-    <circle cx="700" cy="211" r="5.5" fill="#4f46e5"/>
-    <path d="M690 228 a10 8 0 0 1 20 0" stroke="#4f46e5" stroke-width="3.4" stroke-linecap="round"/>
-    <circle cx="716" cy="230" r="9" fill="#16a34a"/>
-    <path d="M711 230 l3.5 3.5 6 -7" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="764" cy="210" r="16" stroke="#4f46e5" stroke-width="3.2"/>
+    <circle cx="764" cy="205" r="5.5" fill="#4f46e5"/>
+    <path d="M753 222 a11 8 0 0 1 22 0" stroke="#4f46e5" stroke-width="3.2" stroke-linecap="round"/>
+    <circle cx="781" cy="223" r="8.5" fill="#16a34a"/>
+    <path d="M776.5 223 l3 3 5.5 -6.5" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
-  <text x="496" y="288" font-size="24" font-weight="700" fill="#1a1c2e">Connect</text>
-  <text x="496" y="320" font-size="18" fill="#6b7089">Say “Connect my</text>
-  <text x="496" y="344" font-size="18" fill="#6b7089">NotebookLM,” pick account.</text>
+  <text x="496" y="292" font-size="25" font-weight="700" fill="#1a1c2e">Connect</text>
+  <text x="496" y="324" font-size="18" fill="#6b7089">Say “Connect my</text>
+  <text x="496" y="348" font-size="18" fill="#6b7089">NotebookLM,” pick account.</text>
 
-  <!-- arrow 2->3 -->
-  <path d="M830 259 h32" stroke="#b9bede" stroke-width="3.2" stroke-linecap="round"/>
-  <path d="M856 251 l10 8 -10 8" stroke="#b9bede" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-
-  <!-- card 3 -->
+  <!-- CARD 3 -->
   <g filter="url(#shadow)"><rect x="864" y="168" width="352" height="182" rx="20" fill="#ffffff" stroke="#e7e9f3"/></g>
-  <circle cx="904" cy="208" r="20" fill="#d97757"/>
-  <text x="904" y="215" font-size="20" font-weight="700" fill="#ffffff" text-anchor="middle">3</text>
-  <!-- chat icon -->
-  <g fill="none" stroke="#d97757" stroke-width="3.4" stroke-linejoin="round">
-    <path d="M1082 198 h30 a10 10 0 0 1 10 10 v20 a10 10 0 0 1 -10 10 h-20 l-14 12 v-12 a10 10 0 0 1 4 -40 z"/>
+  <circle cx="916" cy="210" r="20" fill="#d97757"/>
+  <text x="916" y="217" font-size="20" font-weight="700" fill="#ffffff" text-anchor="middle">3</text>
+  <g fill="none" stroke="#d97757" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M1146 192 h28 a10 10 0 0 1 10 10 v16 a10 10 0 0 1 -10 10 h-18 l-13 11 v-11 a10 10 0 0 1 -7 -10 v-16 a10 10 0 0 1 10 -10 z"/>
+    <path d="M1152 206 h22 M1152 214 h14" stroke-width="2.6"/>
   </g>
-  <text x="896" y="288" font-size="24" font-weight="700" fill="#1a1c2e">Ask</text>
-  <text x="896" y="320" font-size="18" fill="#6b7089">Chat with your notebooks —</text>
-  <text x="896" y="344" font-size="18" fill="#6b7089">answers cite your sources.</text>
+  <text x="896" y="292" font-size="25" font-weight="700" fill="#1a1c2e">Ask</text>
+  <text x="896" y="324" font-size="18" fill="#6b7089">Chat with your notebooks —</text>
+  <text x="896" y="348" font-size="18" fill="#6b7089">answers cite your sources.</text>
 
-  <!-- ============ COMPATIBILITY BAR ============ -->
+  <!-- arrows centered in the gaps (gap centers 440 / 840), aligned to card mid-height y=259 -->
+  <g stroke="#b9bede" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M428 259 h22"/><path d="M448 251 l9 8 -9 8"/>
+    <path d="M828 259 h22"/><path d="M848 251 l9 8 -9 8"/>
+  </g>
+
+  <!-- ============ COMPATIBILITY BAR (x=64..1216) ============ -->
   <rect x="64" y="384" width="1152" height="50" rx="25" fill="#eef0fe" stroke="#d9ddfa"/>
   <text x="640" y="415" font-size="17" font-weight="600" fill="#4f46e5" text-anchor="middle">Claude Desktop  ·  Cursor  ·  Codex  ·  Claude Code  ·  Windsurf  ·  Cline  ·  any MCP client</text>
 
-  <!-- ============ MINI CHAT DEMO ============ -->
+  <!-- ============ MINI CHAT DEMO (x=64..1216, y=460 h=184) ============ -->
   <g filter="url(#shadow)"><rect x="64" y="460" width="1152" height="184" rx="20" fill="#ffffff" stroke="#e7e9f3"/></g>
 
-  <text x="112" y="516" font-size="16" fill="#8a8fa8">In your AI assistant — no password, ever.</text>
+  <!-- caption (left x=96) + user bubble (right edge 1184) share the top row -->
+  <text x="96" y="514" font-size="16" fill="#8a8fa8">In your AI assistant — no password, ever.</text>
+  <rect x="884" y="490" width="300" height="46" rx="14" fill="#4f46e5"/>
+  <text x="1160" y="519" font-size="18" font-weight="500" fill="#ffffff" text-anchor="end">List my notebooks</text>
 
-  <!-- user bubble -->
-  <rect x="856" y="486" width="336" height="46" rx="14" fill="#4f46e5"/>
-  <text x="1170" y="515" font-size="18" font-weight="500" fill="#ffffff" text-anchor="end">List my notebooks</text>
+  <!-- assistant bubble (left x=96) + citation chip beside it -->
+  <rect x="96" y="556" width="700" height="74" rx="14" fill="#f3f4f9" stroke="#e7e9f3"/>
+  <text x="124" y="586" font-size="18" font-weight="700" fill="#1a1c2e">You have 6 notebooks</text>
+  <text x="124" y="612" font-size="16" fill="#6b7089">Duffel Flight Offers · Hotel Search API · Air-Quality Analytics …</text>
 
-  <!-- assistant bubble -->
-  <rect x="88" y="546" width="720" height="76" rx="14" fill="#f3f4f9" stroke="#e7e9f3"/>
-  <text x="112" y="576" font-size="18" font-weight="700" fill="#1a1c2e">You have 6 notebooks</text>
-  <text x="112" y="604" font-size="16" fill="#6b7089">Duffel Flight Offers · Hotel Search API · Air-Quality Analytics …</text>
-
-  <!-- citation chip -->
-  <rect x="828" y="564" width="158" height="40" rx="20" fill="#eef8f0" stroke="#c9ead2"/>
-  <circle cx="854" cy="584" r="9" fill="#16a34a"/>
-  <path d="M849.5 584 l3 3 5.5 -6" stroke="#ffffff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-  <text x="872" y="590" font-size="15" font-weight="600" fill="#16a34a">cited sources</text>
+  <rect x="816" y="574" width="158" height="40" rx="20" fill="#eef8f0" stroke="#c9ead2"/>
+  <circle cx="842" cy="594" r="9" fill="#16a34a"/>
+  <path d="M837.5 594 l3 3 5.5 -6" stroke="#ffffff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="860" y="600" font-size="15" font-weight="600" fill="#16a34a">cited sources</text>
 </svg>
