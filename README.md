@@ -6,7 +6,7 @@
 
 ![NotebookLM Connector — install, connect, and ask your Google NotebookLM notebooks from inside any AI assistant](assets/hero.png)
 
-Bring your **Google NotebookLM** notebooks into **any AI assistant that speaks [MCP](https://modelcontextprotocol.io)** — Claude, Cursor, Codex, Windsurf, Cline, and more. Ask questions answered only from your own sources (with citations), add sources, and generate Audio Overviews, reports, quizzes, and more — all from a normal chat.
+Bring your **Google NotebookLM** notebooks into **any AI assistant that speaks [MCP](https://modelcontextprotocol.io)** — Claude, Cursor, Codex, Antigravity IDE, Cline, and more. Ask questions answered only from your own sources (with citations), add sources, and generate Audio Overviews, reports, quizzes, and more — all from a normal chat.
 
 ## Install
 
@@ -48,7 +48,7 @@ In the agent side panel: **⋯ → MCP Servers → Manage MCP Servers → View r
 }
 ```
 
-### Any other MCP client (Windsurf, Cline, …)
+### Any other MCP client (Antigravity IDE, Cline, …)
 
 Add the same `mcpServers` entry shown above to the client’s MCP config.
 
