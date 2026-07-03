@@ -1,5 +1,7 @@
 # NotebookLM Connector
 
+[![PyPI](https://img.shields.io/pypi/v/notebooklm-connector?color=4f46e5)](https://pypi.org/project/notebooklm-connector/) [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
 ![NotebookLM Connector — download, connect, and ask your Google NotebookLM notebooks from inside Claude](assets/hero.png)
 
 Talk to your **Google NotebookLM** notebooks from inside **Claude**. Ask questions answered only from your own sources (with citations), add sources, and generate Audio Overviews, reports, quizzes, and more — all from a normal chat.
@@ -36,13 +38,38 @@ Under the hood that’s **13 tools**: connect/login, list & create notebooks, ad
 
 ---
 
-## Other apps
+## Add it to other apps
 
-**Claude Code:** run `./install.sh` in this folder — it installs everything and registers the server.
+Every app below uses the same one command — **`uvx notebooklm-connector`** — which pulls the connector [from PyPI](https://pypi.org/project/notebooklm-connector/). Nothing to clone.
+*(The machine needs Python 3.12 and [uv](https://docs.astral.sh/uv/) installed — one-time.)*
 
-**Cursor, Codex, Antigravity, and other MCP clients:** add this server with the command
-`uv --directory /path/to/notebooklm-connector run notebooklm-connector`.
-*(A simpler `uvx notebooklm-connector` one-liner is coming once it’s published to PyPI.)*
+**Cursor** — one click:
+
+[![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](cursor://anysphere.cursor-deeplink/mcp/install?name=notebooklm&config=eyJjb21tYW5kIjogInV2eCIsICJhcmdzIjogWyJub3RlYm9va2xtLWNvbm5lY3RvciJdfQ==)
+
+**Codex** — one line:
+
+```bash
+codex mcp add notebooklm -- uvx notebooklm-connector
+```
+
+**Claude Code** — one line:
+
+```bash
+claude mcp add notebooklm -- uvx notebooklm-connector
+```
+
+**Windsurf, Cline, or any other MCP client** — add to its MCP config:
+
+```json
+{
+  "mcpServers": {
+    "notebooklm": { "command": "uvx", "args": ["notebooklm-connector"] }
+  }
+}
+```
+
+Then in a chat: **“Connect my NotebookLM.”** Same as Claude Desktop from there.
 
 ## For developers
 
