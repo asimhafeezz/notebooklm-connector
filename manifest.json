@@ -1,0 +1,43 @@
+{
+  "manifest_version": "0.4",
+  "name": "notebooklm-connector",
+  "display_name": "NotebookLM Connector",
+  "version": "0.2.0",
+  "description": "Connect Google NotebookLM to Claude: grounded Q&A with citations, source management, and Studio content generation.",
+  "long_description": "Gives Claude direct access to your Google NotebookLM account. Ask questions answered exclusively from your notebook sources (with citations), create notebooks, add sources (URLs, YouTube, text, files), and generate Studio content — Audio Overviews, reports, quizzes, flashcards, mind maps, slide decks, infographics — then download the results. Log in by telling Claude 'log in to NotebookLM': it reads your existing Google session from your browser, no password required. Uses NotebookLM's internal API via the notebooklm-py library; sessions last ~2-4 weeks.",
+  "author": {
+    "name": "Asim",
+    "email": "huzaifaasif8978@gmail.com"
+  },
+  "keywords": ["notebooklm", "google", "research", "rag", "citations", "notebooks"],
+  "license": "MIT",
+  "server": {
+    "type": "uv",
+    "entry_point": "main.py",
+    "mcp_config": {
+      "command": "uv",
+      "args": ["run", "--directory", "${__dirname}", "main.py"]
+    }
+  },
+  "compatibility": {
+    "platforms": ["darwin", "win32", "linux"],
+    "runtimes": {
+      "python": ">=3.12,<3.13"
+    }
+  },
+  "tools": [
+    { "name": "notebooklm_auth_status", "description": "Check whether a valid NotebookLM session exists" },
+    { "name": "notebooklm_list_google_accounts", "description": "List Google accounts signed in to the browser, so the user can pick which to connect" },
+    { "name": "notebooklm_login", "description": "Log in as a specific Google account using the browser's existing session (or an interactive sign-in window)" },
+    { "name": "notebooklm_list_notebooks", "description": "List all notebooks in the account" },
+    { "name": "notebooklm_create_notebook", "description": "Create a new notebook" },
+    { "name": "notebooklm_get_notebook", "description": "Notebook overview: AI summary plus sources with IDs and status" },
+    { "name": "notebooklm_add_source", "description": "Add a URL, pasted text, or local file as a source" },
+    { "name": "notebooklm_ask", "description": "Ask a question answered only from the notebook's sources, with citations" },
+    { "name": "notebooklm_generate", "description": "Generate Studio content: audio overview, video, report, quiz, flashcards, mind map, infographic, slide deck, data table" },
+    { "name": "notebooklm_generation_status", "description": "Poll a generation task" },
+    { "name": "notebooklm_list_artifacts", "description": "List generated Studio artifacts" },
+    { "name": "notebooklm_download_artifact", "description": "Download a finished artifact to a local file" },
+    { "name": "notebooklm_delete", "description": "Delete a notebook, source, or artifact" }
+  ]
+}

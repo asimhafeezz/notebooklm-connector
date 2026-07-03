@@ -1,0 +1,27 @@
+[project]
+name = "notebooklm-connector"
+version = "0.2.0"
+description = "Lean MCP server connecting Google NotebookLM to Claude — grounded Q&A, sources, and Studio generation"
+readme = "README.md"
+# Pinned to 3.12: rookiepy ships prebuilt wheels only up to cp312 — on 3.13+
+# uv falls back to a Rust source build that is slow and often fails.
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "mcp>=1.28.1",
+    "notebooklm-py[cookies]>=0.7.3",
+]
+
+[project.optional-dependencies]
+# Only needed for the interactive sign-in window fallback (notebooklm_login
+# method='interactive'); the default browser-cookie login works without it.
+interactive-login = ["notebooklm-py[browser]>=0.7.3"]
+
+[project.scripts]
+notebooklm-connector = "notebooklm_connector.server:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/notebooklm_connector"]
