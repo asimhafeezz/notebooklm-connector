@@ -68,30 +68,54 @@
   /* nav */
   nav {
     position: sticky;
-    top: 0;
+    top: 16px;
     z-index: 50;
-    backdrop-filter: blur(16px);
-    background: rgba(3, 7, 18, 0.75);
-    border-bottom: 1px solid var(--border);
+    margin-bottom: -16px;
   }
-  nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 70px; }
-  
-  .brand { display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 18px; letter-spacing: -0.02em; }
-  .brand .logo {
-    width: 32px;
-    height: 32px;
-    border-radius: 10px;
-    background: var(--indigo);
-    display: grid;
-    place-items: center;
-    box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
+  nav .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    background: rgba(10, 15, 30, 0.7);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 0 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    transition: border-color 0.3s;
   }
-  .brand .logo svg { width: 18px; height: 18px; }
+  nav .wrap:hover {
+    border-color: rgba(99, 102, 241, 0.2);
+  }
   
-  .nav-links { display: flex; align-items: center; gap: 32px; font-size: 14px; font-weight: 500; color: var(--muted); }
-  .nav-links a { transition: color 0.2s; }
+  .brand { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 18px; letter-spacing: -0.03em; }
+  
+  .nav-links { display: flex; align-items: center; gap: 28px; font-size: 14px; font-weight: 600; color: var(--muted); }
+  .nav-links a {
+    position: relative;
+    padding: 6px 0;
+    transition: color 0.2s;
+  }
   .nav-links a:hover { color: var(--text); }
-  .nav-cta {
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: var(--indigo);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.25s ease-in-out;
+  }
+  .nav-links a:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  
+  .nav-links .nav-cta {
     padding: 8px 18px;
     border: 1px solid var(--border-hover);
     border-radius: 10px;
@@ -99,7 +123,8 @@
     background: var(--indigo-glow);
     transition: background 0.2s, border-color 0.2s !important;
   }
-  .nav-cta:hover { background: rgba(99, 102, 241, 0.25); border-color: var(--indigo); }
+  .nav-links .nav-cta:hover { background: rgba(99, 102, 241, 0.25); border-color: var(--indigo); }
+  .nav-links .nav-cta::after { display: none !important; }
   @media(max-width:720px) { .nav-links a:not(.nav-cta) { display: none; } }
 
   /* hero */
@@ -177,6 +202,87 @@
   }
   .hero-shot:hover { border-color: rgba(99, 102, 241, 0.3); }
 
+  /* hero SVG animation classes */
+  .hero-pulse-left {
+    stroke-dasharray: 12, 120;
+    stroke-dashoffset: 132;
+    animation: flow-left 4s infinite linear;
+  }
+  .hero-pulse-right {
+    stroke-dasharray: 12, 120;
+    stroke-dashoffset: 132;
+    animation: flow-right 4s infinite linear;
+  }
+  @keyframes flow-left {
+    0% { stroke-dashoffset: 132; opacity: 0; }
+    5%, 45% { opacity: 1; }
+    50%, 100% { stroke-dashoffset: 0; opacity: 0; }
+  }
+  @keyframes flow-right {
+    0%, 50% { stroke-dashoffset: 132; opacity: 0; }
+    55%, 95% { opacity: 1; }
+    100% { stroke-dashoffset: 0; opacity: 0; }
+  }
+  
+  .hero-eq-bar {
+    transform-origin: bottom;
+    animation: bounce-hero-eq 1.4s infinite ease-in-out;
+  }
+  .hbar-1 { animation-delay: 0.1s; }
+  .hbar-2 { animation-delay: 0.5s; }
+  .hbar-3 { animation-delay: 0.2s; }
+  .hbar-4 { animation-delay: 0.7s; }
+  .hbar-5 { animation-delay: 0.3s; }
+  .hbar-6 { animation-delay: 0.6s; }
+  .hbar-7 { animation-delay: 0.4s; }
+  
+  @keyframes bounce-hero-eq {
+    0%, 100% { transform: scaleY(0.4); }
+    50% { transform: scaleY(1.2); }
+  }
+  
+  .hero-user-bubble {
+    animation: hero-fade-user 8s infinite ease-in-out;
+    transition: opacity 0.3s;
+  }
+  .hero-ai-bubble {
+    animation: hero-fade-ai 8s infinite ease-in-out;
+    transition: opacity 0.3s, transform 0.3s;
+  }
+  .hero-console-line {
+    animation: hero-fade-console 8s infinite ease-in-out;
+    transition: opacity 0.3s;
+  }
+  .hero-citations {
+    animation: hero-fade-citations 8s infinite ease-in-out;
+    transition: opacity 0.3s;
+  }
+  
+  @keyframes hero-fade-user {
+    0%, 100% { opacity: 0.4; }
+    10%, 90% { opacity: 1; }
+  }
+  @keyframes hero-fade-console {
+    0%, 15%, 85%, 100% { opacity: 0.2; }
+    20%, 80% { opacity: 1; }
+  }
+  @keyframes hero-fade-ai {
+    0%, 35%, 100% { opacity: 0; transform: translateY(5px); }
+    42%, 85% { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes hero-fade-citations {
+    0%, 55%, 100% { opacity: 0; }
+    60%, 80% { opacity: 1; }
+  }
+  
+  .hero-lock-badge {
+    animation: hero-lock-pulse 2s infinite ease-in-out;
+  }
+  @keyframes hero-lock-pulse {
+    0%, 100% { filter: drop-shadow(0 0 2px rgba(255,255,255,0.05)); }
+    50% { filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.25)); }
+  }
+
   /* client strip */
   .clients { margin-top: 64px; text-align: center; color: var(--dim); font-size: 13px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
   .clients .row { display: flex; flex-wrap: wrap; gap: 14px 28px; justify-content: center; margin-top: 20px; font-size: 16px; font-weight: 600; color: var(--muted); }
@@ -220,86 +326,6 @@
   .feat h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.01em; }
   .feat p { color: var(--muted); font-size: 14.5px; line-height: 1.6; }
 
-  /* interactive live simulator */
-  .simulator-container {
-    max-width: 800px;
-    margin: 48px auto 0;
-    background: #090D16;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    overflow: hidden;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
-  }
-  .sim-header {
-    background: #0B0F19;
-    padding: 14px 20px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .sim-dots { display: flex; gap: 8px; }
-  .sim-dot { width: 10px; height: 10px; border-radius: 50%; background: #EF4444; }
-  .sim-dot:nth-child(2) { background: #F59E0B; }
-  .sim-dot:nth-child(3) { background: #10B981; }
-  .sim-title { font-size: 12px; font-weight: 600; color: var(--muted); font-family: var(--mono); }
-  
-  .sim-body { padding: 24px; font-family: var(--mono); font-size: 13.5px; }
-  .sim-controls {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 24px;
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 16px;
-  }
-  .sim-btn {
-    padding: 6px 14px;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid var(--border);
-    color: var(--muted);
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .sim-btn.active, .sim-btn:hover {
-    color: var(--text);
-    background: var(--indigo-glow);
-    border-color: var(--indigo);
-  }
-
-  .sim-console { min-height: 200px; display: flex; flex-direction: column; gap: 14px; }
-  .sim-line-user { color: #A5B4FC; display: flex; gap: 8px; }
-  .sim-line-mcp { color: #38BDF8; font-size: 12.5px; padding-left: 20px; }
-  .sim-line-ai { color: #E2E8F0; padding-left: 20px; border-left: 2px solid var(--border); margin: 6px 0; }
-  .sim-citation { color: #34D399; font-weight: 700; }
-  .sim-source-tag {
-    display: inline-block;
-    font-size: 11px;
-    background: rgba(16, 185, 129, 0.1);
-    color: var(--green);
-    border: 1px solid rgba(16, 185, 129, 0.2);
-    border-radius: 4px;
-    padding: 2px 6px;
-    margin-top: 6px;
-  }
-  .sim-loader {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    color: var(--muted);
-  }
-  .sim-spinner {
-    width: 14px;
-    height: 14px;
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    border-top-color: var(--indigo);
-    border-radius: 50%;
-    animation: spin 1s infinite linear;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
 
   /* animated how it works section */
   .how-anim-container {
@@ -521,8 +547,17 @@
 
 <nav><div class="wrap">
   <a class="brand" href="#top">
-    <span class="logo"><svg viewBox="0 0 24 24" fill="none"><path d="M6 6h12v2H6zM6 11h12v2H6zM6 16h7v2H6z" fill="#fff"/></svg></span>
-    NotebookLM Connector
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="url(#logo-grad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 2px;">
+      <defs>
+        <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#6366F1"/>
+          <stop offset="100%" stop-color="#10B981"/>
+        </linearGradient>
+      </defs>
+      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+    </svg>
+    <span>NotebookLM <span style="color: var(--muted); font-weight: 500;">Connector</span></span>
   </a>
   <div class="nav-links">
     <a href="#how">How it works</a>
@@ -547,7 +582,282 @@
     <a class="btn btn-ghost" href="https://github.com/asimhafeezz/notebooklm-connector" target="_blank" rel="noopener">★ Star on GitHub</a>
   </div>
   
-  <div class="hero-shot"><img src="hero.png" alt="NotebookLM Connector — install, connect, ask" width="1280" height="680"></div>
+  <div class="hero-shot">
+    <svg width="100%" height="auto" viewBox="0 0 1280 680" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <!-- Background Gradient -->
+        <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#0A0E17"/>
+          <stop offset="50%" stop-color="#0F1424"/>
+          <stop offset="100%" stop-color="#070A0F"/>
+        </linearGradient>
+
+        <!-- Card Glowing Borders -->
+        <linearGradient id="card-border" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#4F46E5" stop-opacity="0.4"/>
+          <stop offset="50%" stop-color="#3B82F6" stop-opacity="0.1"/>
+          <stop offset="100%" stop-color="#10B981" stop-opacity="0.4"/>
+        </linearGradient>
+
+        <!-- Glowing Line Gradient -->
+        <linearGradient id="glow-line" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#3B82F6" stop-opacity="0.2"/>
+          <stop offset="50%" stop-color="#10B981" stop-opacity="0.4"/>
+          <stop offset="100%" stop-color="#3B82F6" stop-opacity="0.2"/>
+        </linearGradient>
+
+        <!-- Text Title Gradient -->
+        <linearGradient id="title-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#FFFFFF"/>
+          <stop offset="100%" stop-color="#CBD5E1"/>
+        </linearGradient>
+
+        <!-- Glassmorphic Drop Shadow -->
+        <filter id="card-shadow" x="-10%" y="-10%" width="120%" height="120%">
+          <feDropShadow dx="0" dy="8" stdDeviation="16" flood-color="#000000" flood-opacity="0.5"/>
+        </filter>
+
+        <!-- Glow Effect Filter -->
+        <filter id="neon-glow" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="6" result="blur"/>
+          <feMerge>
+            <feMergeNode in="blur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+
+        <!-- Grid Pattern -->
+        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#ffffff" stroke-width="1" stroke-opacity="0.03"/>
+        </pattern>
+      </defs>
+
+      <style>
+        .font-sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        .title { font-weight: 800; font-size: 40px; fill: url(#title-grad); }
+        .subtitle { font-weight: 400; font-size: 18px; fill: #94A3B8; }
+        .panel-title { font-weight: 700; font-size: 20px; fill: #F8FAFC; }
+        .badge-text { font-weight: 600; font-size: 14px; fill: #10B981; }
+        .code-text { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 13px; fill: #E2E8F0; }
+        .bubble-user { font-weight: 500; font-size: 14px; fill: #F1F5F9; }
+        .bubble-ai { font-size: 14px; fill: #E2E8F0; }
+      </style>
+
+      <!-- Background -->
+      <rect width="1280" height="680" fill="url(#bg-grad)"/>
+      <rect width="1280" height="680" fill="url(#grid)"/>
+
+      <!-- Top Decorative Glows -->
+      <circle cx="200" cy="100" r="250" fill="#4F46E5" opacity="0.15" filter="blur(80px)"/>
+      <circle cx="1080" cy="100" r="250" fill="#10B981" opacity="0.1" filter="blur(80px)"/>
+      <circle cx="640" cy="340" r="200" fill="#3B82F6" opacity="0.08" filter="blur(80px)"/>
+
+      <!-- ================= HEADER SECTION ================= -->
+      <!-- Logo/Brand Icon -->
+      <g transform="translate(64, 48)">
+        <rect width="48" height="48" rx="12" fill="#4F46E5" />
+        <path d="M16 16H32V20H16V16ZM16 24H32V28H16V24ZM16 32H26V36H16V32Z" fill="#FFFFFF"/>
+        <circle cx="34" cy="34" r="8" fill="#10B981" stroke="#0A0E17" stroke-width="2"/>
+        <path d="M32 34h4m-2-2v4" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round"/>
+      </g>
+
+      <!-- Title & Subtitle -->
+      <text x="128" y="78" class="font-sans title">NotebookLM Connector</text>
+      <text x="128" y="106" class="font-sans subtitle">Bring Google NotebookLM sources, citations, and Studio generations directly into your local AI assistants</text>
+
+      <!-- Works with MCP Badge -->
+      <g transform="translate(980, 52)">
+        <rect width="236" height="36" rx="18" fill="#0F172A" stroke="#1E293B" stroke-width="1.5"/>
+        <circle cx="22" cy="18" r="5" fill="#10B981"/>
+        <text x="36" y="23" class="font-sans badge-text">Works with any MCP client</text>
+      </g>
+
+      <!-- ================= LAYOUT PANELS ================= -->
+
+      <!-- LEFT PANEL: Google NotebookLM -->
+      <g transform="translate(64, 160)" filter="url(#card-shadow)">
+        <!-- Card Frame -->
+        <rect width="440" height="420" rx="24" fill="#0B1324" fill-opacity="0.6" stroke="url(#card-border)" stroke-width="1.5"/>
+        
+        <!-- Header -->
+        <g transform="translate(24, 24)">
+          <rect width="32" height="32" rx="8" fill="#10B981"/>
+          <path d="M11 11h10v2H11v-2zm0 4h10v2H11v-2zm0 4h7v2H11v-2z" fill="#FFFFFF"/>
+          <text x="44" y="22" class="font-sans panel-title">Google NotebookLM</text>
+          <text x="44" y="38" class="font-sans" font-size="12" fill="#64748B">Account Sources &amp; Studio</text>
+        </g>
+
+        <!-- Source Items -->
+        <g transform="translate(24, 88)">
+          <!-- Source 1 (PDF) -->
+          <g transform="translate(0, 0)">
+            <rect width="392" height="52" rx="10" fill="#0F172A" stroke="#1E293B" stroke-width="1"/>
+            <rect x="12" y="12" width="28" height="28" rx="6" fill="#EF4444" fill-opacity="0.15"/>
+            <path d="M22 20h8v8h-8z" fill="#EF4444" opacity="0.3"/>
+            <text x="21" y="30" font-family="monospace" font-size="12" font-weight="700" fill="#EF4444">PDF</text>
+            <text x="52" y="26" class="font-sans" font-size="14" font-weight="600" fill="#E2E8F0">AI_Research_Thesis.pdf</text>
+            <text x="52" y="42" class="font-sans" font-size="11" fill="#64748B">Source #1 · 24 pages · Uploaded</text>
+            <!-- Connected Tag -->
+            <rect x="300" y="14" width="80" height="24" rx="12" fill="#10B981" fill-opacity="0.1"/>
+            <text x="340" y="30" class="font-sans" font-size="11" font-weight="600" fill="#10B981" text-anchor="middle">Connected</text>
+          </g>
+
+          <!-- Source 2 (YouTube) -->
+          <g transform="translate(0, 64)">
+            <rect width="392" height="52" rx="10" fill="#0F172A" stroke="#1E293B" stroke-width="1"/>
+            <rect x="12" y="12" width="28" height="28" rx="6" fill="#F43F5E" fill-opacity="0.15"/>
+            <path d="M20 20l12 6-12 6z" fill="#F43F5E"/>
+            <text x="52" y="26" class="font-sans" font-size="14" font-weight="600" fill="#E2E8F0">Audio Overview Tutorial</text>
+            <text x="52" y="42" class="font-sans" font-size="11" fill="#64748B">Source #2 · 12:45 min · YouTube Video</text>
+            <rect x="300" y="14" width="80" height="24" rx="12" fill="#10B981" fill-opacity="0.1"/>
+            <text x="340" y="30" class="font-sans" font-size="11" font-weight="600" fill="#10B981" text-anchor="middle">Connected</text>
+          </g>
+
+          <!-- Source 3 (Web URL) -->
+          <g transform="translate(0, 128)">
+            <rect width="392" height="52" rx="10" fill="#0F172A" stroke="#1E293B" stroke-width="1"/>
+            <rect x="12" y="12" width="28" height="28" rx="6" fill="#3B82F6" fill-opacity="0.15"/>
+            <path d="M22 20h8v2h-8v-2zm-2 4h12v2H20v-2zm2 4h8v2h-8v-2z" fill="#3B82F6" opacity="0.4"/>
+            <circle cx="26" cy="26" r="6" stroke="#3B82F6" stroke-width="1.5" fill="none"/>
+            <text x="52" y="26" class="font-sans" font-size="14" font-weight="600" fill="#E2E8F0">https://modelcontextprotocol.io</text>
+            <text x="52" y="42" class="font-sans" font-size="11" fill="#64748B">Source #3 · Documentation Page</text>
+            <rect x="300" y="14" width="80" height="24" rx="12" fill="#10B981" fill-opacity="0.1"/>
+            <text x="340" y="30" class="font-sans" font-size="11" font-weight="600" fill="#10B981" text-anchor="middle">Connected</text>
+          </g>
+        </g>
+
+        <!-- Studio Content / Audio Overview Banner -->
+        <g transform="translate(24, 304)">
+          <rect width="392" height="92" rx="14" fill="#0B0F19" stroke="#10B981" stroke-opacity="0.3" stroke-width="1.5"/>
+          <text x="20" y="28" class="font-sans" font-size="13" font-weight="700" fill="#10B981" letter-spacing="1">NOTEBOOKLM STUDIO</text>
+          <text x="20" y="48" class="font-sans" font-size="16" font-weight="600" fill="#F8FAFC">Generate Studio Content</text>
+          <text x="20" y="68" class="font-sans" font-size="12" fill="#94A3B8">Create Audio Overviews, quizzes, reports via chat</text>
+          
+          <!-- Audio Equalizer Mockup -->
+          <g transform="translate(260, 20)">
+            <g transform="translate(0, 10)">
+              <rect class="hero-eq-bar hbar-1" x="0" y="10" width="3" height="15" rx="1.5" fill="#10B981"/>
+              <rect class="hero-eq-bar hbar-2" x="6" y="2" width="3" height="23" rx="1.5" fill="#10B981"/>
+              <rect class="hero-eq-bar hbar-3" x="12" y="12" width="3" height="13" rx="1.5" fill="#10B981"/>
+              <rect class="hero-eq-bar hbar-4" x="18" y="0" width="3" height="25" rx="1.5" fill="#10B981"/>
+              <rect class="hero-eq-bar hbar-5" x="24" y="6" width="3" height="19" rx="1.5" fill="#10B981"/>
+              <rect class="hero-eq-bar hbar-6" x="30" y="14" width="3" height="11" rx="1.5" fill="#10B981"/>
+              <rect class="hero-eq-bar hbar-7" x="36" y="4" width="3" height="21" rx="1.5" fill="#10B981"/>
+            </g>
+            <rect x="2" y="46" width="70" height="18" rx="9" fill="#10B981" fill-opacity="0.2"/>
+            <path d="M12 51l6 4-6 4v-8z" fill="#10B981"/>
+            <text x="26" y="59" class="font-sans" font-size="10" font-weight="700" fill="#10B981">LISTEN</text>
+          </g>
+        </g>
+      </g>
+
+      <!-- MIDDLE SECTION: MCP BRIDGE & CONNECTOR -->
+      <!-- Glowing Data Pipelines -->
+      <g filter="url(#neon-glow)">
+        <!-- Base static line frames -->
+        <path d="M504 370 C 570 370, 570 330, 616 330 H 664" stroke="url(#glow-line)" stroke-width="3" fill="none" opacity="0.3"/>
+        <path d="M504 370 C 570 370, 570 410, 616 410 H 664" stroke="url(#glow-line)" stroke-width="3" fill="none" opacity="0.3"/>
+        <path d="M776 370 C 710 370, 710 330, 664 330" stroke="url(#glow-line)" stroke-width="3" fill="none" opacity="0.3"/>
+        <path d="M776 370 C 710 370, 710 410, 664 410" stroke="url(#glow-line)" stroke-width="3" fill="none" opacity="0.3"/>
+        
+        <!-- Pulsing lines (Left to Middle, Middle to Right) -->
+        <path class="hero-pulse-left" d="M504 370 C 570 370, 570 330, 616 330 H 664" stroke="#10B981" stroke-width="3" fill="none"/>
+        <path class="hero-pulse-left" d="M504 370 C 570 370, 570 410, 616 410 H 664" stroke="#10B981" stroke-width="3" fill="none"/>
+        <path class="hero-pulse-right" d="M 664 330 C 710 330, 710 370, 776 370" stroke="#3B82F6" stroke-width="3" fill="none"/>
+        <path class="hero-pulse-right" d="M 664 410 C 710 410, 710 370, 776 370" stroke="#3B82F6" stroke-width="3" fill="none"/>
+      </g>
+
+      <!-- Connector Node -->
+      <g transform="translate(568, 320)" filter="url(#card-shadow)">
+        <rect width="144" height="100" rx="16" fill="#0B1324" stroke="#3B82F6" stroke-width="2"/>
+        <rect x="8" y="8" width="128" height="84" rx="10" fill="#0F172A" stroke="#1E293B" stroke-width="1"/>
+        
+        <!-- Link Icon -->
+        <g transform="translate(60, 20)">
+          <path d="M -8 -4 H 8 M -8 4 H 8 M -4 -8 V 8 M 4 -8 V 8" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" fill="none"/>
+          <circle cx="0" cy="0" r="10" stroke="#10B981" stroke-width="2" fill="none"/>
+          <circle cx="0" cy="0" r="3" fill="#10B981"/>
+        </g>
+
+        <text x="72" y="66" class="font-sans" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">notebooklm-connector</text>
+        <text x="72" y="80" class="font-sans" font-size="10" font-weight="600" fill="#3B82F6" text-anchor="middle">MCP SERVER</text>
+      </g>
+
+      <!-- Secure Local Auth Badge below Connector -->
+      <g transform="translate(520, 444)" class="hero-lock-badge">
+        <rect width="240" height="28" rx="14" fill="#0F172A" stroke="#1E293B" stroke-width="1"/>
+        <!-- Lock symbol -->
+        <path d="M102 11h6v4h-6zm1-5a2 2 0 0 1 4 0v5h-4z" stroke="#94A3B8" stroke-width="1.5" fill="none"/>
+        <text x="122" y="18" class="font-sans" font-size="11" fill="#94A3B8">Secure Local Auth · No Password</text>
+      </g>
+
+      <!-- ================= RIGHT PANEL: AI ASSISTANT / IDE ================= -->
+      <g transform="translate(776, 160)" filter="url(#card-shadow)">
+        <!-- Card Frame -->
+        <rect width="440" height="420" rx="24" fill="#0B1324" fill-opacity="0.6" stroke="url(#card-border)" stroke-width="1.5"/>
+
+        <!-- Header -->
+        <g transform="translate(24, 24)">
+          <rect width="32" height="32" rx="8" fill="#4F46E5"/>
+          <path d="M16 8l2 6 6 2-6 2-2 6-2-6-6-2 6-2z" fill="#FFFFFF"/>
+          <text x="44" y="22" class="font-sans" font-weight="700" font-size="20" fill="#F8FAFC">AI Assistant / IDE</text>
+          <text x="44" y="38" class="font-sans" font-size="12" fill="#64748B">Cursor · Claude Desktop · Claude Code · Cline</text>
+        </g>
+
+        <!-- Chat Dialogue Box Mock -->
+        <g transform="translate(24, 88)">
+          <!-- User Input -->
+          <g transform="translate(0, 0)" class="hero-user-bubble">
+            <rect width="392" height="64" rx="14" fill="#1E293B" stroke="#334155" stroke-width="1"/>
+            <circle cx="28" cy="32" r="14" fill="#4F46E5"/>
+            <text x="28" y="37" class="font-sans" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">U</text>
+            <text x="56" y="28" class="font-sans bubble-user">"Ask my Thesis notebook: what does</text>
+            <text x="56" y="46" class="font-sans bubble-user">it say about neural grounding?"</text>
+          </g>
+
+          <!-- Assistant Output -->
+          <g transform="translate(0, 78)" class="hero-ai-bubble">
+            <rect width="392" height="152" rx="14" fill="#0F172A" stroke="#1E293B" stroke-width="1"/>
+            <circle cx="28" cy="28" r="14" fill="#10B981" fill-opacity="0.2"/>
+            <path d="M28 22l1 4 4 1-4 1-1 4-1-4-4-1 4-1z" fill="#10B981"/>
+            
+            <text x="56" y="28" class="font-sans bubble-ai">According to the thesis source <tspan fill="#34D399" font-weight="700" class="hero-citations">[1]</tspan>, neural grounding</text>
+            <text x="56" y="48" class="font-sans bubble-ai">bridges token representations with physical sensors.</text>
+            
+            <!-- Grounded citation detailed bullet points -->
+            <text x="56" y="76" class="font-sans bubble-ai" fill="#94A3B8">• Grounding is defined on page 12 <tspan fill="#34D399" font-weight="700" class="hero-citations">[2]</tspan>.</text>
+            <text x="56" y="96" class="font-sans bubble-ai" fill="#94A3B8">• Results show 18% improvement <tspan fill="#34D399" font-weight="700" class="hero-citations">[3]</tspan>.</text>
+
+            <!-- Cited Sources Footer inside response -->
+            <g class="hero-citations">
+              <rect x="56" y="112" width="316" height="26" rx="6" fill="#10B981" fill-opacity="0.08"/>
+              <path d="M68 125l3 3 5-5" stroke="#10B981" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+              <text x="82" y="128" class="font-sans" font-size="11" font-weight="700" fill="#10B981">Grounded citations active</text>
+            </g>
+          </g>
+
+          <!-- Code Console / Tool Execution Badge -->
+          <g transform="translate(0, 244)" class="hero-console-line">
+            <rect width="392" height="64" rx="12" fill="#090D16" stroke="#1E293B" stroke-width="1"/>
+            <circle cx="24" cy="32" r="6" fill="#10B981"/>
+            <text x="38" y="28" class="font-sans" font-size="12" font-weight="700" fill="#F8FAFC">mcp-server/notebooklm_ask</text>
+            <text x="38" y="46" font-family="monospace" font-size="12" fill="#38BDF8">Executing tool call in workspace...</text>
+            
+            <rect x="300" y="18" width="76" height="26" rx="6" fill="#1E293B" />
+            <text x="338" y="34" class="font-sans" font-size="11" font-weight="700" fill="#94A3B8" text-anchor="middle">SUCCESS</text>
+          </g>
+        </g>
+      </g>
+
+      <!-- ================= COMPATIBILITY LOGOS BAR ================= -->
+      <g transform="translate(64, 600)">
+        <rect width="1152" height="48" rx="12" fill="#0B1324" stroke="#1E293B" stroke-width="1.5"/>
+        <text x="576" y="28" class="font-sans" font-size="14" font-weight="600" fill="#94A3B8" text-anchor="middle">
+          Compatible with: Claude Desktop  ·  Cursor  ·  Claude Code  ·  Windsurf  ·  Cline  ·  Codex  ·  Any standard MCP Client
+        </text>
+      </g>
+    </svg>
+  </div>
 
   <div class="clients">
     Drop it into
@@ -593,28 +903,6 @@
     </div>
   </div>
 
-  <!-- Interactive Live Simulator Block -->
-  <div class="simulator-container" style="text-align:left">
-    <div class="sim-header">
-      <div class="sim-dots">
-        <span class="sim-dot"></span>
-        <span class="sim-dot"></span>
-        <span class="sim-dot"></span>
-      </div>
-      <div class="sim-title">notebooklm-connector interactive-preview.sh</div>
-      <div style="width: 40px"></div>
-    </div>
-    <div class="sim-body">
-      <div class="sim-controls">
-        <button class="sim-btn active" onclick="runSim('ask')">Ask Notebook</button>
-        <button class="sim-btn" onclick="runSim('sources')">Add Sources</button>
-        <button class="sim-btn" onclick="runSim('audio')">Generate Audio</button>
-      </div>
-      <div class="sim-console" id="console">
-        <!-- Interactive contents load here -->
-      </div>
-    </div>
-  </div>
 </div></section>
 
 <section id="how"><div class="wrap center">
@@ -786,79 +1074,6 @@ function switchTab(tabId) {
   document.getElementById('tab-' + tabId).classList.add('active');
 }
 
-// Live Tool Simulator
-const consoleData = {
-  ask: [
-    { type: 'user', text: '> "Ask my Thesis notebook: what does it say about grounding?"' },
-    { type: 'mcp', text: 'Executing: mcp-server/notebooklm_ask({ query: "grounding" }) ...' },
-    { type: 'loader' },
-    { type: 'ai', text: 'According to source <span class="sim-citation">[1]</span>, grounding connects language symbols with sensor data.<br><br>• Grounding is defined on page 12 <span class="sim-citation">[2]</span>.<br>• It improves agent autonomy <span class="sim-citation">[3]</span>.' },
-    { type: 'source', text: 'Sources: [1] AI_Research_Thesis.pdf  [2] docs.md  [3] tutorial_video.mp4' }
-  ],
-  sources: [
-    { type: 'user', text: '> "Add website https://modelcontextprotocol.io as a source"' },
-    { type: 'mcp', text: 'Executing: mcp-server/notebooklm_add_source({ url: "https://modelcontextprotocol.io" }) ...' },
-    { type: 'loader' },
-    { type: 'ai', text: 'Successfully added the URL source to your active notebook! NotebookLM has finished indexing the page and it is now ready for Q&A.' },
-    { type: 'source', text: 'Source Added: MCP Documentation (URL)' }
-  ],
-  audio: [
-    { type: 'user', text: '> "Generate an Audio Overview for my Product Launch notebook"' },
-    { type: 'mcp', text: 'Executing: mcp-server/notebooklm_generate({ type: "audio_overview" }) ...' },
-    { type: 'loader', style: 'long' },
-    { type: 'ai', text: 'Audio Overview generated successfully! Downloader tool triggered to save file to local directory.' },
-    { type: 'source', text: 'Saved to local system: ~/Downloads/Product_Launch_Overview.wav' }
-  ]
-};
-
-function runSim(key) {
-  // Update button active state
-  document.querySelectorAll('.sim-btn').forEach(btn => btn.classList.remove('active'));
-  event.target.classList.add('active');
-
-  const container = document.getElementById('console');
-  container.innerHTML = '';
-  
-  let steps = consoleData[key];
-  let currentStep = 0;
-
-  function renderNext() {
-    if (currentStep >= steps.length) return;
-    let step = steps[currentStep];
-    
-    if (step.type === 'loader') {
-      let loader = document.createElement('div');
-      loader.className = 'sim-loader';
-      loader.innerHTML = '<span class="sim-spinner"></span> <span>Running Google API query...</span>';
-      container.appendChild(loader);
-      
-      // Simulate loading wait time
-      let waitTime = step.style === 'long' ? 1800 : 1000;
-      setTimeout(() => {
-        loader.remove();
-        currentStep++;
-        renderNext();
-      }, waitTime);
-    } else {
-      let div = document.createElement('div');
-      if (step.type === 'user') div.className = 'sim-line-user';
-      else if (step.type === 'mcp') div.className = 'sim-line-mcp';
-      else if (step.type === 'ai') div.className = 'sim-line-ai';
-      else if (step.type === 'source') div.className = 'sim-source-tag';
-      
-      div.innerHTML = step.text;
-      container.appendChild(div);
-      currentStep++;
-      
-      setTimeout(renderNext, 400);
-    }
-  }
-  
-  renderNext();
-}
-
-// Start default simulation
-runSim('ask');
 
 // Interactive Diagram Animation Logic
 const explainers = [
