@@ -6,10 +6,16 @@ readme = "README.md"
 # Pinned to 3.12: rookiepy ships prebuilt wheels only up to cp312 — on 3.13+
 # uv falls back to a Rust source build that is slow and often fails.
 requires-python = ">=3.12,<3.13"
+license = "MIT"
 dependencies = [
     "mcp>=1.28.1",
     "notebooklm-py[cookies]>=0.7.3",
 ]
+
+[project.urls]
+Homepage = "https://github.com/asimhafeezz/notebooklm-connector"
+Repository = "https://github.com/asimhafeezz/notebooklm-connector"
+Issues = "https://github.com/asimhafeezz/notebooklm-connector/issues"
 
 [project.optional-dependencies]
 # Only needed for the interactive sign-in window fallback (notebooklm_login
