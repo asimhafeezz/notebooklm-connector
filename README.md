@@ -20,7 +20,7 @@ Pick your app below. Then in a chat, say **“Connect my NotebookLM”**, choose
 
 ### Cursor — one click
 
-[![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](cursor://anysphere.cursor-deeplink/mcp/install?name=notebooklm&config=eyJjb21tYW5kIjogInV2eCIsICJhcmdzIjogWyJub3RlYm9va2xtLWNvbm5lY3RvciJdfQ==)
+[![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/install-mcp?name=notebooklm&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyJub3RlYm9va2xtLWNvbm5lY3RvciJdfQ==)
 
 ### Codex — one line
 
