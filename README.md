@@ -4,6 +4,10 @@ Connect **Google NotebookLM** to **Claude** — ask questions answered *only* fr
 
 Ships as a one-file installable for Claude Desktop and an installer script for Claude Code.
 
+### ⬇️ [Download the latest installer (NotebookLM-Connector.mcpb)](https://github.com/asimhafeezz/notebooklm-connector/releases/latest)
+
+Download it, double-click, and Claude Desktop installs it. (Requires Python 3.12 on the machine.)
+
 ## Install
 
 ### Claude Desktop (easiest — double-click)
