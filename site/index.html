@@ -10,7 +10,7 @@
 <meta property="og:image" content="/hero.png">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234F46E5'/><path d='M30 32h40v8H30zM30 48h40v8H30zM30 64h24v8H30z' fill='white'/></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='lg' x1='0' y1='0' x2='100' y2='100'><stop offset='0%25' stop-color='%236366F1'/><stop offset='100%25' stop-color='%2310B981'/></linearGradient></defs><rect width='100' height='100' rx='22' fill='%230A0E17'/><path d='M25 80A10 10 0 0 1 35 70H85' stroke='url(%23lg)' stroke-width='8' stroke-linecap='round' fill='none'/><path d='M35 15H85v65H35A10 10 0 0 1 25 70V25A10 10 0 0 1 35 15z' stroke='url(%23lg)' stroke-width='8' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>">
 
 <!-- Google Fonts: Plus Jakarta Sans -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -225,6 +225,7 @@
   }
   
   .hero-eq-bar {
+    transform-box: fill-box;
     transform-origin: bottom;
     animation: bounce-hero-eq 1.4s infinite ease-in-out;
   }
@@ -655,10 +656,16 @@
       <!-- ================= HEADER SECTION ================= -->
       <!-- Logo/Brand Icon -->
       <g transform="translate(64, 48)">
-        <rect width="48" height="48" rx="12" fill="#4F46E5" />
-        <path d="M16 16H32V20H16V16ZM16 24H32V28H16V24ZM16 32H26V36H16V32Z" fill="#FFFFFF"/>
-        <circle cx="34" cy="34" r="8" fill="#10B981" stroke="#0A0E17" stroke-width="2"/>
-        <path d="M32 34h4m-2-2v4" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round"/>
+        <defs>
+          <linearGradient id="hero-logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#6366F1"/>
+            <stop offset="100%" stop-color="#10B981"/>
+          </linearGradient>
+        </defs>
+        <g transform="scale(2)">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" stroke="url(#hero-logo-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" stroke="url(#hero-logo-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </g>
       </g>
 
       <!-- Title & Subtitle -->
@@ -1049,10 +1056,19 @@
 </div></section>
 
 <footer><div class="wrap">
-  <div class="brand">
-    <span class="logo"><svg viewBox="0 0 24 24"><path d="M6 6h12v2H6zM6 11h12v2H6zM6 16h7v2H6z" fill="#fff"/></svg></span>
-    NotebookLM Connector
-  </div>
+  <a class="brand" href="#top">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="url(#footer-logo-grad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 2px;">
+      <defs>
+        <linearGradient id="footer-logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#6366F1"/>
+          <stop offset="100%" stop-color="#10B981"/>
+        </linearGradient>
+      </defs>
+      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+    </svg>
+    <span>NotebookLM <span style="color: var(--muted); font-weight: 500;">Connector</span></span>
+  </a>
   <div class="foot-links">
     <a href="https://github.com/asimhafeezz/notebooklm-connector" target="_blank" rel="noopener">GitHub</a>
     <a href="https://pypi.org/project/notebooklm-connector/" target="_blank" rel="noopener">PyPI</a>
