@@ -75,12 +75,30 @@ Off by default (it uses several extra queries from the daily quota). Turn it on 
 ## Good to know
 
 - **No password, ever** — the connector reuses the Google account you’re already signed into in your browser. On Mac, approve the one-time Keychain popup.
-- **Supported browsers** — Chrome, Brave, Edge, Arc, Opera, Vivaldi, Firefox, LibreWolf, Zen, and **Comet** (Perplexity’s browser, macOS). Just say which one: *“connect using Comet.”* Safari also works but needs macOS **Full Disk Access** for the app running the connector.
-  On a browser we can’t read? Sign in to [notebooklm.google.com](https://notebooklm.google.com) once in any supported browser, then *“connect using Brave.”* Or use the interactive sign-in window (`uv sync --extra interactive-login && uv run playwright install chromium`, then *“log in interactively”*), which works no matter your daily browser.
 - **Sessions last ~2–4 weeks.** When it stops working, just say “Connect my NotebookLM” again.
 - **Free NotebookLM accounts** allow about 50 questions per day.
 - **It’s your own account** — use it as you normally would.
 - **Unofficial** — this uses NotebookLM’s internal API (Google has no public one). It’s reliable but can break if Google changes things; updating usually fixes it.
+
+## Browsers & operating systems
+
+The connector logs in by reading your existing Google session from a browser. Which browsers work depends on your OS:
+
+| Browser | macOS | Windows | Linux | Notes |
+|---|:---:|:---:|:---:|---|
+| Chrome, Brave, Edge, Chromium | ✅ | ✅ | ✅ | Easiest — one Keychain/OS prompt |
+| Firefox, LibreWolf, Zen | ✅ | ✅ | ✅ | |
+| Opera, Vivaldi | ✅ | ✅ | ✅ | |
+| Arc | ✅ | ✅ | — | Not on Linux |
+| **Comet** (Perplexity) | ✅ | — | — | macOS only |
+| Safari | ✅ | — | — | Needs macOS **Full Disk Access** for the app |
+| **Atlas** (OpenAI), and other *app-bound-encrypted* browsers | ❌ | ❌ | ❌ | Cookies are locked to the app — can’t be read (see below) |
+
+> Developed and fully tested on **macOS**. The cross-platform browsers above also work on Windows/Linux (via [rookiepy](https://github.com/thewh1teagle/rookie)); Comet and Safari are macOS-only.
+
+**Which browser does it use?** By default it tries **Chrome** — it does **not** read your OS’s default-browser setting. Tell it which browser to use in plain language (*“connect using Brave”*, *“connect using Comet”*) and it uses that one instead.
+
+**Browser we can’t read (Atlas, or anything not listed)?** Some browsers (like OpenAI’s Atlas) encrypt cookies with a key locked to the app itself — a deliberate anti-malware protection that blocks all external readers, including this one. For those: sign in to [notebooklm.google.com](https://notebooklm.google.com) once in any supported browser (Chrome/Brave/Firefox/Comet) and *“connect using Brave”*, or use the interactive sign-in window (`uv sync --extra interactive-login && uv run playwright install chromium`, then *“log in interactively”*) which works regardless of your daily browser.
 
 ## How it works
 
