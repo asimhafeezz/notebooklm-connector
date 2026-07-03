@@ -2,7 +2,7 @@
   "manifest_version": "0.4",
   "name": "notebooklm-connector",
   "display_name": "NotebookLM Connector",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Connect Google NotebookLM to Claude: grounded Q&A with citations, source management, and Studio content generation.",
   "long_description": "Gives Claude direct access to your Google NotebookLM account. Ask questions answered exclusively from your notebook sources (with citations), create notebooks, add sources (URLs, YouTube, text, files), and generate Studio content — Audio Overviews, reports, quizzes, flashcards, mind maps, slide decks, infographics — then download the results. Log in by telling Claude 'log in to NotebookLM': it reads your existing Google session from your browser, no password required. Uses NotebookLM's internal API via the notebooklm-py library; sessions last ~2-4 weeks.",
   "author": {
